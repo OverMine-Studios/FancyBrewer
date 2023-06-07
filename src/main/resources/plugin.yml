@@ -1,0 +1,4 @@
+main: dev.risas.fancybrewer.FancyBrewer
+name: FancyBrewer
+version: ${project.version}
+
