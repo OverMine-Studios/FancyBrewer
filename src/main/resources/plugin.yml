@@ -1,4 +1,5 @@
 main: dev.risas.fancybrewer.FancyBrewer
 name: FancyBrewer
 version: ${project.version}
+api-version: 1.13
 
