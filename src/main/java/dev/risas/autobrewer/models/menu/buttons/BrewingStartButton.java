@@ -1,13 +1,14 @@
 package dev.risas.autobrewer.models.menu.buttons;
 
 import com.cryptomorin.xseries.XMaterial;
-import dev.risas.autobrewer.AutoBrewer;
+import dev.risas.autobrewer.AutoBrewerPlugin;
 import dev.risas.autobrewer.models.Brewer;
 import dev.risas.autobrewer.models.BrewerPotionStage;
 import dev.risas.autobrewer.models.BrewerState;
+import dev.risas.autobrewer.servicies.types.ConfigService;
+import dev.risas.autobrewer.servicies.types.LanguageService;
 import dev.risas.autobrewer.utilities.ChatUtil;
-import dev.risas.autobrewer.utilities.CooldownUtil;
-import dev.risas.autobrewer.utilities.file.FileConfig;
+import dev.risas.autobrewer.utilities.cooldown.CooldownUtil;
 import dev.risas.autobrewer.utilities.item.ItemBuilder;
 import dev.risas.autobrewer.utilities.menu.Button;
 import org.bukkit.Material;
@@ -17,77 +18,89 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BrewingStartButton extends Button {
 
-    private final AutoBrewer plugin;
-    private final FileConfig languageFile;
+    private final AutoBrewerPlugin plugin;
     private final Brewer brewer;
 
-    public BrewingStartButton(AutoBrewer plugin, Brewer brewer) {
+    public BrewingStartButton(AutoBrewerPlugin plugin, Brewer brewer) {
         this.plugin = plugin;
-        this.languageFile = plugin.getLanguageFile();
         this.brewer = brewer;
     }
 
     @Override
     public ItemStack getButtonItem(Player player) {
         if (brewer.getState() == BrewerState.BREWING) {
-            List<String> lore = new ArrayList<>();
-            lore.add("");
-
+            ItemStack itemStack = ConfigService.BREWING_MENU_BUTTONS_START_BREWING.clone();
             BrewerPotionStage stage = brewer.getCurrentStage();
+            List<String> lore = new ArrayList<>();
 
-            lore.add(" " + stage.getColorStage(BrewerPotionStage.AWKWARD) + "► &fBrew Awkward Potion");
-            lore.add(" " + stage.getColorStage(BrewerPotionStage.INGREDIENT_1) + "► &fBrew " + brewer.getPotionType().getName());
+            for (String line : itemStack.getItemMeta().getLore()) {
+                if (line.contains("<stage-potion-type-3>")) {
+                    if (brewer.getPotionType().getIngredients().contains(Material.GLOWSTONE_DUST)) {
+                        lore.add(line
+                                .replace("<stage-potion-type-3>", ConfigService.BREWING_MENU_BUTTONS_START_BREWING_STAGE_POTION_TYPES.get(2)
+                                        .replace("<stage-potion-type>", brewer.getPotionType().getName())
+                                        .replace("<stage-color>", stage.getColorStage(BrewerPotionStage.INGREDIENT_2))));
+                    }
+                    continue;
+                }
+                if (line.contains("<stage-potion-type-4>")) {
+                    if (brewer.getPotionType().getIngredients().contains(XMaterial.GUNPOWDER.parseMaterial())) {
+                        lore.add(line
+                                .replace("<stage-potion-type-4>", ConfigService.BREWING_MENU_BUTTONS_START_BREWING_STAGE_POTION_TYPES.get(3)
+                                        .replace("<stage-potion-type>", brewer.getPotionType().getName())
+                                        .replace("<stage-color>", stage.getColorStage(BrewerPotionStage.INGREDIENT_3))));
+                    }
+                    continue;
+                }
 
-            if (brewer.getPotionType().getIngredients().contains(Material.GLOWSTONE_DUST)) {
-                lore.add(" " + stage.getColorStage(BrewerPotionStage.INGREDIENT_2) + "► &fBrew " + brewer.getPotionType().getName() + " II");
+                lore.add(line
+                        .replace("<stage-potion-type-1>", ConfigService.BREWING_MENU_BUTTONS_START_BREWING_STAGE_POTION_TYPES.get(0)
+                                .replace("<stage-color>", stage.getColorStage(BrewerPotionStage.AWKWARD)))
+                        .replace("<stage-potion-type-2>", ConfigService.BREWING_MENU_BUTTONS_START_BREWING_STAGE_POTION_TYPES.get(1)
+                                .replace("<stage-color>", stage.getColorStage(BrewerPotionStage.INGREDIENT_1)))
+                        .replace("<stage-potion-type>", brewer.getPotionType().getName())
+                        .replace("<stage-phase>", String.valueOf(brewer.getCurrentStage().getIndex() + 1))
+                        .replace("<stage-phase-time>", brewer.getCurrentStage().getStageCooldownFormatted())
+                        .replace("<time>", brewer.getEstimatedTimeRemainingFormatted()));
             }
-            if (brewer.getPotionType().getIngredients().contains(XMaterial.GUNPOWDER.parseMaterial())) {
-                lore.add(" " + stage.getColorStage(BrewerPotionStage.INGREDIENT_3) + "► &fBrew Splash " + brewer.getPotionType().getName());
-            }
 
-            lore.add("");
-            lore.add("&7Current Stage");
-            lore.add("  &7Phase: &e" + (brewer.getCurrentStage().getIndex() + 1));
-            lore.add("  &7Time: &e" + brewer.getCurrentStage().getStageCooldownFormatted());
-            lore.add("");
-            lore.add("&7Estimated Time: &e" + brewer.getEstimatedTimeRemainingFormatted());
-            lore.add("");
-            lore.add("&eClick to stop brewing.");
-
-            return new ItemBuilder(XMaterial.BREWING_STAND.parseMaterial())
-                    .setName("&a&lBrewing")
+            return new ItemBuilder(itemStack)
                     .setLore(lore)
                     .build();
         }
-        return new ItemBuilder(XMaterial.BREWING_STAND.parseMaterial())
-                .setName("&a&lStart Brewing")
-                .setLore("&7Estimated Time: &e" + brewer.getEstimatedTimeRemainingFormatted())
+        ItemStack itemStack = ConfigService.BREWING_MENU_BUTTONS_START_NOT_BREWING.clone();
+        return new ItemBuilder(itemStack)
+                .setLore(itemStack.getItemMeta().getLore()
+                        .stream().map(line -> line
+                                .replace("<time>", brewer.getEstimatedTimeRemainingFormatted()))
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     @Override
     public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
         if (CooldownUtil.hasCooldown(player, "brewing-start-button")) {
-            ChatUtil.sendMessage(player, "&cYou can't click this button yet.");
+            ChatUtil.sendMessage(player, "&cYou can't click this button so fast!");
             return;
         }
 
-        CooldownUtil.setCooldown(player, "brewing-start-button", 1000L);
+        CooldownUtil.setCooldown(plugin, player, "brewing-start-button", 1);
 
         if (brewer.getState() == BrewerState.IDLE) {
             if (brewer.getCurrentStage() == null) {
                 if (!brewer.hasMinBottles()) {
                     playFail(player);
-                    ChatUtil.sendMessage(player, languageFile.getString("brewer-messages.need-bottles"));
+                    ChatUtil.sendMessage(player, LanguageService.BREWER_MESSAGES_NEED_BOTTLES);
                     return;
                 }
 
                 if (brewer.getPotionType() == null) {
                     playFail(player);
-                    ChatUtil.sendMessage(player, languageFile.getString("brewer-messages.need-ingredients"));
+                    ChatUtil.sendMessage(player, LanguageService.BREWER_MESSAGES_NEED_INGREDIENTS);
                     return;
                 }
             }

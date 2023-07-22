@@ -1,12 +1,13 @@
 package dev.risas.autobrewer.listeners;
 
-import dev.risas.autobrewer.AutoBrewer;
+import dev.risas.autobrewer.AutoBrewerPlugin;
 import dev.risas.autobrewer.models.Brewer;
 import dev.risas.autobrewer.models.BrewerManager;
 import dev.risas.autobrewer.models.BrewerState;
+import dev.risas.autobrewer.servicies.types.ConfigService;
+import dev.risas.autobrewer.servicies.types.LanguageService;
 import dev.risas.autobrewer.utilities.ChatUtil;
 import dev.risas.autobrewer.utilities.PlayerUtil;
-import dev.risas.autobrewer.utilities.file.FileConfig;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,14 +28,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class BrewerListener implements Listener {
 
-    private final AutoBrewer plugin;
-    private final FileConfig languageFile;
+    private final AutoBrewerPlugin plugin;
     private final BrewerManager brewerManager;
 
-    public BrewerListener(AutoBrewer plugin) {
+    public BrewerListener(AutoBrewerPlugin plugin) {
         this.plugin = plugin;
-        this.languageFile = plugin.getLanguageFile();
-        this.brewerManager = plugin.getBrewerManager();
+        this.brewerManager = plugin.getInstance().getBrewerManager();
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -43,7 +42,7 @@ public class BrewerListener implements Listener {
 
         if (brewerManager.isBrewer(player.getItemInHand())) {
             brewerManager.addBrewer(new Brewer(event.getBlock().getLocation()));
-            ChatUtil.sendMessage(player, languageFile.getString("brewer-messages.placed"));
+            ChatUtil.sendMessage(player, LanguageService.BREWER_MESSAGES_PLACED);
         }
     }
 
@@ -59,25 +58,25 @@ public class BrewerListener implements Listener {
             Brewer brewer = brewerManager.getBrewer(location);
 
             if (brewer.getState() != BrewerState.IDLE) {
-                ChatUtil.sendMessage(player, languageFile.getString("brewer-messages.cant-remove.working"));
+                ChatUtil.sendMessage(player, LanguageService.BREWER_MESSAGES_CANT_REMOVE_WORKING);
                 return;
             }
 
             if (brewer.hasBottles()) {
-                ChatUtil.sendMessage(player, languageFile.getString("brewer-messages.cant-remove.has-bottles"));
+                ChatUtil.sendMessage(player, LanguageService.BREWER_MESSAGES_CANT_REMOVE_HAS_BOTTLES);
                 return;
             }
 
             if (brewer.hasIngredients()) {
-                ChatUtil.sendMessage(player, languageFile.getString("brewer-messages.cant-remove.has-ingredients"));
+                ChatUtil.sendMessage(player, LanguageService.BREWER_MESSAGES_CANT_REMOVE_HAS_INGREDIENTS);
                 return;
             }
 
             brewerManager.removeBrewer(brewer);
             block.setType(Material.AIR);
 
-            PlayerUtil.dropOrGiveItem(player, brewerManager.getBrewerItem().clone());
-            ChatUtil.sendMessage(player, languageFile.getString("brewer-messages.removed"));
+            PlayerUtil.dropOrGiveItem(player, ConfigService.BREWING_ITEM);
+            ChatUtil.sendMessage(player, LanguageService.BREWER_MESSAGES_REMOVED);
         }
     }
 
@@ -104,7 +103,7 @@ public class BrewerListener implements Listener {
         Inventory clickedInventory = event.getClickedInventory();
         if (clickedInventory == null) return;
 
-        if (clickedInventory.getType() == InventoryType.PLAYER && event.getView().getTitle().equals("Fancy Brewer")) {
+        if (clickedInventory.getType() == InventoryType.PLAYER && event.getView().getTitle().equals(ConfigService.BREWING_MENU_TITLE)) {
             if (!event.isShiftClick()) return;
 
             Player player = (Player) event.getWhoClicked();
@@ -118,7 +117,7 @@ public class BrewerListener implements Listener {
             if (currentItem.getType() == Material.GLASS_BOTTLE) {
                 if (brewer.hasFullBottles() || brewer.getBottles().size() >= 3) {
                     event.setCancelled(true);
-                    ChatUtil.sendMessage(player, languageFile.getString("brewer-messages.full-bottles"));
+                    ChatUtil.sendMessage(player, LanguageService.BREWER_MESSAGES_FULL_BOTTLES);
                     return;
                 }
 
@@ -143,7 +142,7 @@ public class BrewerListener implements Listener {
     private void onBrewerInventoryClose(InventoryCloseEvent event) {
         InventoryView topInventory = event.getView();
 
-        if (topInventory.getTitle().equals(languageFile.getString("brewer-menu.title"))) {
+        if (topInventory.getTitle().equals(ConfigService.BREWING_MENU_TITLE)) {
             Player player = (Player) event.getPlayer();
             Brewer brewer = brewerManager.getOpenedBrewer(player);
 

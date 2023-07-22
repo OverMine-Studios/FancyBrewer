@@ -1,6 +1,7 @@
 package dev.risas.autobrewer.utilities;
 
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -35,5 +36,15 @@ public class ChatUtil {
     public void sendMessage(CommandSender sender, String[] array) {
         if (array.length == 0) return;
         sender.sendMessage(translate(array));
+    }
+
+    public void logger(String text) {
+        if (text.isEmpty()) return;
+        Bukkit.getConsoleSender().sendMessage(translate(text));
+    }
+
+    public void logger(String[] array) {
+        if (array.length == 0) return;
+        Bukkit.getConsoleSender().sendMessage(translate(array));
     }
 }

@@ -1,13 +1,12 @@
 package dev.risas.autobrewer.models;
 
-import com.cryptomorin.xseries.XMaterial;
-import dev.risas.autobrewer.AutoBrewer;
+import dev.risas.autobrewer.servicies.types.ConfigService;
 import dev.risas.autobrewer.utilities.BukkitUtil;
 import dev.risas.autobrewer.utilities.file.FileConfig;
 import dev.risas.autobrewer.utilities.item.ItemBuilder;
+import dev.risas.autobrewer.utilities.plugin.AutoBrewer;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,16 +17,14 @@ import java.util.*;
 @Getter @Setter
 public class BrewerManager {
 
-    private final FileConfig brewerFile;
+    private final FileConfig brewerDataFile;
     private final Map<Location, Brewer> brewers;
     private final Map<UUID, Brewer> openedBrewers;
-    private ItemStack brewerItem;
 
     public BrewerManager(AutoBrewer plugin) {
-        this.brewerFile = plugin.getBrewerFile();
+        this.brewerDataFile = plugin.getFile("brewer-data");
         this.brewers = new HashMap<>();
         this.openedBrewers = new HashMap<>();
-        this.loadBrewerItem();
         this.loadBrewers();
     }
 
@@ -51,14 +48,16 @@ public class BrewerManager {
 
     public void addBrewer(Brewer brewer) {
         brewers.put(brewer.getLocation(), brewer);
-    }
-
-    public void addOpenedBrewer(Player player, Brewer brewer) {
-        openedBrewers.put(player.getUniqueId(), brewer);
+        saveBrewerConfig(brewer);
     }
 
     public void removeBrewer(Brewer brewer) {
         brewers.remove(brewer.getLocation());
+        removeBrewerConfig(brewer);
+    }
+
+    public void addOpenedBrewer(Player player, Brewer brewer) {
+        openedBrewers.put(player.getUniqueId(), brewer);
     }
 
     public void removeOpenedBrewer(Player player) {
@@ -70,40 +69,39 @@ public class BrewerManager {
     }
 
     public boolean isBrewer(ItemStack itemStack) {
-        return itemStack.isSimilar(brewerItem);
+        return itemStack.isSimilar(ConfigService.BREWING_ITEM);
     }
 
     public void giveBrewer(Player player, int amount) {
-        for (int i = 0; i < amount; i++) {
-            player.getInventory().addItem(brewerItem);
-        }
+        player.getInventory().addItem(new ItemBuilder(ConfigService.BREWING_ITEM)
+                .setAmount(amount)
+                .build());
     }
 
-    public void giveAllBrewer(int amount) {
-        Bukkit.getOnlinePlayers().forEach(player -> giveBrewer(player, amount));
+    private void saveBrewerConfig(Brewer brewer) {
+        String serializedLocation = BukkitUtil.serializeBlockLocation(brewer.getLocation());
+        List<String> locations = brewerDataFile.getStringList("brewers");
+
+        locations.add(serializedLocation);
+
+        brewerDataFile.getConfiguration().set("brewers", locations);
+        brewerDataFile.save();
     }
 
-    public void loadBrewerItem() {
-        this.brewerItem = new ItemBuilder(XMaterial.BREWING_STAND.parseMaterial())
-                .setName(brewerFile.getString("brewer-item.name"))
-                .setLore(brewerFile.getStringList("brewer-item.description"))
-                .build();
+    private void removeBrewerConfig(Brewer brewer) {
+        String serializedLocation = BukkitUtil.serializeBlockLocation(brewer.getLocation());
+        List<String> locations = brewerDataFile.getStringList("brewers");
+
+        locations.remove(serializedLocation);
+
+        brewerDataFile.getConfiguration().set("brewers", locations);
+        brewerDataFile.save();
     }
 
     private void loadBrewers() {
-        for (String key : brewerFile.getStringList("brewers")) {
-            this.addBrewer(new Brewer(BukkitUtil.deserializeBlockLocation(key)));
+        for (String key : brewerDataFile.getStringList("brewers")) {
+            Location location = BukkitUtil.deserializeBlockLocation(key);
+            brewers.put(location, new Brewer(location));
         }
-    }
-
-    public void onDisable() {
-        List<String> locations = new ArrayList<>();
-
-        for (Brewer brewer : brewers.values()) {
-            locations.add(BukkitUtil.serializeBlockLocation(brewer.getLocation()));
-        }
-
-        brewerFile.getConfiguration().set("brewers", locations);
-        brewerFile.save();
     }
 }

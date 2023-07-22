@@ -1,6 +1,6 @@
 package dev.risas.autobrewer.utilities.menu;
 
-import dev.risas.autobrewer.AutoBrewer;
+import dev.risas.autobrewer.AutoBrewerPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,9 +11,9 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class ButtonListener implements Listener {
 
-	private final AutoBrewer plugin;
+	private final AutoBrewerPlugin plugin;
 
-	public ButtonListener(AutoBrewer plugin) {
+	public ButtonListener(AutoBrewerPlugin plugin) {
 		this.plugin = plugin;
 	}
 
@@ -50,20 +50,6 @@ public class ButtonListener implements Listener {
 					menu.setClosedByMenu(true);
 					menu.openMenu(player, plugin);
 				}
-				/*if (Menu.getMenus().containsKey(player.getUniqueId())) {
-					Menu newMenu = Menu.getMenu(player);
-
-					if (newMenu == menu) {
-						if (menu.isUpdateAfterClick()) {
-							menu.setClosedByMenu(true);
-							newMenu.openMenu(player, plugin);
-						}
-					}
-				}
-				else if (button.shouldUpdate(player, event.getSlot(), event.getClick())) {
-					menu.setClosedByMenu(true);
-					menu.openMenu(player, plugin);
-				}*/
 			}
 		}
 	}

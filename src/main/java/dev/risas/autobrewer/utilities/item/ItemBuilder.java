@@ -1,5 +1,6 @@
 package dev.risas.autobrewer.utilities.item;
 
+import com.cryptomorin.xseries.XMaterial;
 import dev.risas.autobrewer.utilities.BukkitUtil;
 import dev.risas.autobrewer.utilities.ChatUtil;
 import org.bukkit.Color;
@@ -16,6 +17,8 @@ import org.bukkit.potion.PotionType;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class ItemBuilder {
 
@@ -28,20 +31,30 @@ public class ItemBuilder {
     }
 
     public ItemBuilder(Material material) {
-        this(material, 1, 0);
+        this(XMaterial.matchXMaterial(material).parseMaterial(), 1, 0);
     }
 
     public ItemBuilder(Material material, int amount) {
-        this(material, amount, 0);
+        this(XMaterial.matchXMaterial(material).parseMaterial(), amount, 0);
     }
 
     public ItemBuilder(String material) {
-        this.itemStack = new ItemStack(Material.matchMaterial(material), 1, (short) 0);
+        String materialName = material.toUpperCase();
+        Optional<XMaterial> xMaterial = XMaterial.matchXMaterial(materialName);
+
+        if (!xMaterial.isPresent()) {
+            ChatUtil.logger("&c[ItemBuilder] Invalid material: " + materialName + ".");
+            this.itemStack = new ItemStack(Material.STONE);
+            this.itemMeta = itemStack.getItemMeta();
+            return;
+        }
+
+        this.itemStack = new ItemStack(Objects.requireNonNull(xMaterial.get().parseMaterial()), 1, (short) 0);
         this.itemMeta = itemStack.getItemMeta();
     }
 
     public ItemBuilder(Material material, int amount, int data) {
-        this.itemStack = new ItemStack(material, amount, (short) data);
+        this.itemStack = new ItemStack(Objects.requireNonNull(XMaterial.matchXMaterial(material).parseMaterial()), amount, (short) data);
         this.itemMeta = itemStack.getItemMeta();
     }
 

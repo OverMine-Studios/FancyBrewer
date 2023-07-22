@@ -1,6 +1,6 @@
 package dev.risas.autobrewer.models.task;
 
-import dev.risas.autobrewer.AutoBrewer;
+import dev.risas.autobrewer.AutoBrewerPlugin;
 import dev.risas.autobrewer.models.Brewer;
 import dev.risas.autobrewer.models.BrewerPotionStage;
 import dev.risas.autobrewer.models.BrewerState;
@@ -9,10 +9,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class BrewingTask extends BukkitRunnable {
 
-    private final AutoBrewer plugin;
+    private final AutoBrewerPlugin plugin;
     private final Brewer brewer;
 
-    public BrewingTask(AutoBrewer plugin, Brewer brewer) {
+    public BrewingTask(AutoBrewerPlugin plugin, Brewer brewer) {
         this.plugin = plugin;
         this.brewer = brewer;
     }
@@ -40,6 +40,12 @@ public class BrewingTask extends BukkitRunnable {
                         for (int i = 0; i < 3; i++) {
                             brewer.getHopperInventory().addItem(brewer.getPotionType().getResult().clone());
                         }
+                    }
+                }
+
+                if (!brewer.isTransfer() || !brewer.hasHopperDown()) {
+                    for (int i = 0; i < 3; i++) {
+                        brewer.getStorage().addPotion(brewer.getPotionType().getResult().clone());
                     }
                 }
 

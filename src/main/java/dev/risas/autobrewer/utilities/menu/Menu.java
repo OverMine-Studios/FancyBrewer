@@ -2,7 +2,7 @@ package dev.risas.autobrewer.utilities.menu;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.Maps;
-import dev.risas.autobrewer.AutoBrewer;
+import dev.risas.autobrewer.AutoBrewerPlugin;
 import dev.risas.autobrewer.utilities.item.ItemBuilder;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +39,7 @@ public abstract class Menu {
         return new ItemBuilder(button.getButtonItem(player)).build();
     }
 
-    public void openMenu(Player player, AutoBrewer plugin) {
+    public void openMenu(Player player, AutoBrewerPlugin plugin) {
         this.buttons = this.getButtons(player);
 
         Menu previousMenu = Menu.getMenu(player);

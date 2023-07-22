@@ -1,0 +1,73 @@
+license: ""
+
+brewer-item:
+  name: "&6&lAutoBrewer"
+  description:
+    - "&7Place this item on the ground to create a autobrewer."
+  enchanted: true
+
+brewer-menu:
+  title: "AutoBrewer Menu"
+  rows: 6
+  buttons:
+    start:
+      brewing:
+        name: "&a&lBrewing"
+        stage-potion-types:
+          - " <stage-color>► &fBrew Awkward Potion"
+          - " <stage-color>► &fBrew <stage-potion-type>"
+          - " <stage-color>► &fBrew <stage-potion-type> II"
+          - " <stage-color>► &fBrew Splash <stage-potion-type>"
+        description:
+          - ""
+          - "<stage-potion-type-1>"
+          - "<stage-potion-type-2>"
+          - "<stage-potion-type-3>"
+          - "<stage-potion-type-4>"
+          - ""
+          - "&7Current Stage"
+          - "  &7Phase: &e<stage-phase>"
+          - "  &7Time: &e<stage-phase-time>"
+          - ""
+          - "&7Estimated Time: &e<time>"
+          - ""
+          - "&eClick to stop brewing."
+        material: "BREWING_STAND"
+        data: 0
+      not-brewing:
+        name: "&a&lStart Brewing"
+        description:
+          - "&7Estimated Time: &e<time>"
+        material: "BREWING_STAND"
+        data: 0
+      slot: 12
+    storage:
+      name: "&9&lStorage"
+      description:
+        - "&7Click to open the storage."
+      material: "CHEST_MINECART"
+      data: 0
+      slot: 13
+    transfer:
+      name: "&a&lTransfer"
+      description:
+        - "&7Status: <status>"
+      material: "HOPPER"
+      data: 0
+      slot: 14
+    display:
+      slot: 37
+    bottle-1:
+      slot: 10
+    bottle-2:
+      slot: 19
+    bottle-3:
+      slot: 28
+    ingredient-1:
+      slot: 16
+    ingredient-2:
+      slot: 25
+    ingredient-3:
+      slot: 34
+    ingredient-4:
+      slot: 43

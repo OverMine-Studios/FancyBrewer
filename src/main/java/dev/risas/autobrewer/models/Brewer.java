@@ -1,6 +1,6 @@
 package dev.risas.autobrewer.models;
 
-import dev.risas.autobrewer.AutoBrewer;
+import dev.risas.autobrewer.AutoBrewerPlugin;
 import dev.risas.autobrewer.models.menu.BrewerMenu;
 import dev.risas.autobrewer.models.task.BrewingTask;
 import dev.risas.autobrewer.utilities.TimeUtil;
@@ -21,12 +21,12 @@ import java.util.List;
 public class Brewer {
 
     private final Location location;
-    private List<ItemStack> ingredients;
-    private List<ItemStack> bottles;
+    private List<ItemStack> ingredients, bottles;
     private List<BrewerPotionStage> potionStages;
     private BrewerState state;
     private BrewerPotionType potionType;
     private BrewerPotionStage currentStage;
+    private BrewerStorage storage;
     private long startedTime, estimatedTime;
     private boolean transfer;
 
@@ -36,10 +36,11 @@ public class Brewer {
         this.ingredients = new ArrayList<>();
         this.bottles = new ArrayList<>();
         this.potionStages = new ArrayList<>();
+        this.storage = new BrewerStorage();
         this.transfer = true;
     }
 
-    public void startBrewing(AutoBrewer plugin) {
+    public void startBrewing(AutoBrewerPlugin plugin) {
         if (currentStage == null) {
             setStartedTime(System.currentTimeMillis());
             setEstimatedTime(getEstimatedTimeByPotionType());
@@ -238,7 +239,7 @@ public class Brewer {
         }
     }
 
-    public void open(Player player, AutoBrewer plugin) {
+    public void open(Player player, AutoBrewerPlugin plugin) {
         BrewerMenu menu = new BrewerMenu(plugin, this);
         menu.openMenu(player, plugin);
     }

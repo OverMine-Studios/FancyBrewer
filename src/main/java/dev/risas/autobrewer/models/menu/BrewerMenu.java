@@ -1,9 +1,11 @@
 package dev.risas.autobrewer.models.menu;
 
-import dev.risas.autobrewer.AutoBrewer;
+import dev.risas.autobrewer.AutoBrewerPlugin;
 import dev.risas.autobrewer.models.Brewer;
 import dev.risas.autobrewer.models.BrewerState;
 import dev.risas.autobrewer.models.menu.buttons.*;
+import dev.risas.autobrewer.servicies.types.ConfigService;
+import dev.risas.autobrewer.utilities.ChatUtil;
 import dev.risas.autobrewer.utilities.menu.Button;
 import dev.risas.autobrewer.utilities.menu.Menu;
 import org.bukkit.entity.Player;
@@ -13,41 +15,40 @@ import java.util.Map;
 
 public class BrewerMenu extends Menu {
 
-    private final AutoBrewer plugin;
+    private final AutoBrewerPlugin plugin;
     private final Brewer brewer;
 
-    public BrewerMenu(AutoBrewer plugin, Brewer brewer) {
+    public BrewerMenu(AutoBrewerPlugin plugin, Brewer brewer) {
         this.plugin = plugin;
         this.brewer = brewer;
     }
 
     @Override
     public String getTitle(Player player) {
-        return plugin.getLanguageFile().getString("brewer-menu.title");
+        return ChatUtil.translate(ConfigService.BREWING_MENU_TITLE);
     }
 
     @Override
     public int getSize() {
-        return 9 * 6;
+        return ConfigService.BREWING_MENU_ROWS * 9;
     }
 
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(16, new BrewingStartButton(plugin, brewer));
-        buttons.put(25, new BrewingStorageButton());
-        buttons.put(31, new BrewingDisplayButton(brewer));
-        buttons.put(34, new BrewingTransferButton(brewer));
+        buttons.put(ConfigService.BREWING_MENU_BUTTONS_START_SLOT, new BrewingStartButton(plugin, brewer));
+        buttons.put(ConfigService.BREWING_MENU_BUTTONS_STORAGE_SLOT, new BrewingStorageButton(plugin, brewer));
+        buttons.put(ConfigService.BREWING_MENU_BUTTONS_DISPLAY_SLOT, new BrewingDisplayButton(brewer));
+        buttons.put(ConfigService.BREWING_MENU_BUTTONS_TRANSFER_SLOT, new BrewingTransferButton(brewer));
 
-        buttons.put(12, new BrewingBottleButton(plugin, brewer, 0));
-        buttons.put(13, new BrewingBottleButton(plugin, brewer, 1));
-        buttons.put(14, new BrewingBottleButton(plugin, brewer, 2));
-        buttons.put(10, new BrewingIngredientButton(plugin, brewer, 0));
-        buttons.put(19, new BrewingIngredientButton(plugin, brewer, 1));
-        buttons.put(28, new BrewingIngredientButton(plugin, brewer, 2));
-        buttons.put(37, new BrewingIngredientButton(plugin, brewer, 3));
-
+        buttons.put(ConfigService.BREWING_MENU_BUTTONS_BOTTLE_1_SLOT, new BrewingBottleButton(plugin, brewer, 0));
+        buttons.put(ConfigService.BREWING_MENU_BUTTONS_BOTTLE_2_SLOT, new BrewingBottleButton(plugin, brewer, 1));
+        buttons.put(ConfigService.BREWING_MENU_BUTTONS_BOTTLE_3_SLOT, new BrewingBottleButton(plugin, brewer, 2));
+        buttons.put(ConfigService.BREWING_MENU_BUTTONS_INGREDIENT_1_SLOT, new BrewingIngredientButton(plugin, brewer, 0));
+        buttons.put(ConfigService.BREWING_MENU_BUTTONS_INGREDIENT_2_SLOT, new BrewingIngredientButton(plugin, brewer, 1));
+        buttons.put(ConfigService.BREWING_MENU_BUTTONS_INGREDIENT_3_SLOT, new BrewingIngredientButton(plugin, brewer, 2));
+        buttons.put(ConfigService.BREWING_MENU_BUTTONS_INGREDIENT_4_SLOT, new BrewingIngredientButton(plugin, brewer, 3));
         return buttons;
     }
 
