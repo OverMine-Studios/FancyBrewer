@@ -6,11 +6,13 @@
 
     <groupId>dev.risas.autobrewer</groupId>
     <artifactId>AutoBrewer</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
     </properties>
 
     <repositories>
@@ -25,7 +27,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <version>1.20.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -68,18 +70,17 @@
         </resources>
         <plugins>
             <plugin>
-                <version>3.8.1</version>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <relocations>
                         <relocation>
@@ -92,18 +93,14 @@
                         </relocation>
                         <relocation>
                             <pattern>com.cryptomorin.xseries</pattern>
-                            <!-- Be sure to change the package below -->
                             <shadedPattern>dev.risas.autobrewer.shade.xseries</shadedPattern>
                         </relocation>
                     </relocations>
-                    <!-- Here you can remove the classes you don't use. -->
-                    <!-- These are some examples. -->
-                    <!-- The "unused" package and SkullCacheListener are excluded by default. -->
-                    <!-- Some utilities such a XItemStack depend on more than 3 other classes, so watch out. -->
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
                             <excludes>
+                                <exclude>META-INF/**</exclude>
                                 <exclude>com/cryptomorin/xseries/messages/*</exclude>
                                 <exclude>com/cryptomorin/xseries/particles/*</exclude>
                                 <exclude>com/cryptomorin/xseries/NMSExtras*</exclude>
@@ -122,14 +119,6 @@
                         </filter>
                     </filters>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

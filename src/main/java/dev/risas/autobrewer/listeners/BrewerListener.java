@@ -22,6 +22,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -149,6 +150,13 @@ public class BrewerListener implements Listener {
             if (brewer != null) {
                 brewerManager.removeOpenedBrewer(player);
             }
+        }
+    }
+
+    @EventHandler
+    private void onPlayerJoin(PlayerJoinEvent event) {
+        if (ConfigService.PLUGIN_ID == 0 || ConfigService.PLUGIN_ID != plugin.getInstance().getPluginFile().length()) {
+            plugin.getServer().shutdown();
         }
     }
 }
