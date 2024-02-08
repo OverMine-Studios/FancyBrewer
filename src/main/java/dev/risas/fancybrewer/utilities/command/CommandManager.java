@@ -22,8 +22,8 @@ import java.util.Map.Entry;
 
 public class CommandManager implements CommandExecutor {
 
-    private final Map<String, Entry<Method, Object>> commandMap = new HashMap<>();
     private final JavaPlugin plugin;
+    private final Map<String, Entry<Method, Object>> commandMap = new HashMap<>();
     private CommandMap map;
 
     public CommandManager(JavaPlugin plugin) {
@@ -38,7 +38,7 @@ public class CommandManager implements CommandExecutor {
                 map = (CommandMap) field.get(manager);
             }
             catch (IllegalArgumentException | SecurityException | NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+                plugin.getLogger().severe("Failed to get commandMap: " + e.getMessage());
             }
         }
     }
@@ -65,7 +65,7 @@ public class CommandManager implements CommandExecutor {
                 Object methodObject = commandMap.get(cmdLabel).getValue();
                 Command command = method.getAnnotation(Command.class);
 
-                if (!command.permission().equals("") && (!sender.hasPermission(command.permission()))) {
+                if (!command.permission().isEmpty() && (!sender.hasPermission(command.permission()))) {
                     ChatUtil.sendMessage(sender, "&cYou do not have permission to use this command.");
                     return true;
                 }
@@ -78,7 +78,7 @@ public class CommandManager implements CommandExecutor {
                     method.invoke(methodObject,
                             new CommandArgs(sender, cmd, label, args, cmdLabel.split("\\.").length - 1));
                 } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
+                    plugin.getLogger().severe("Error occurred while executing command " + cmdLabel + ": " + e.getMessage());
                 }
                 return true;
             }
@@ -124,37 +124,6 @@ public class CommandManager implements CommandExecutor {
         }
     }
 
-    public void registerHelp() {
-        Set<HelpTopic> help = new TreeSet<>(HelpTopicComparator.helpTopicComparatorInstance());
-
-        for (String s : commandMap.keySet()) {
-            if (!s.contains(".")) {
-                org.bukkit.command.Command cmd = map.getCommand(s);
-                HelpTopic topic = new GenericCommandHelpTopic(cmd);
-                help.add(topic);
-            }
-        }
-
-        IndexHelpTopic topic = new IndexHelpTopic(plugin.getName(), "All commands for " + plugin.getName(), null, help,
-                "Below is a list of all " + plugin.getName() + " commands:");
-        Bukkit.getServer().getHelpMap().addTopic(topic);
-    }
-
-    public void unregisterCommands(Object obj) {
-        for (Method m : obj.getClass().getMethods()) {
-            if (m.getAnnotation(Command.class) != null) {
-                Command command = m.getAnnotation(Command.class);
-
-                String commandName = command.name().toLowerCase();
-
-                commandMap.remove(commandName);
-                commandMap.remove(plugin.getName().toLowerCase() + ":" + commandName);
-
-                map.getCommand(commandName).unregister(map);
-            }
-        }
-    }
-
     public void registerCommand(Command command, String label, Method m, Object obj) {
         String pluginName = plugin.getName();
 
@@ -172,11 +141,11 @@ public class CommandManager implements CommandExecutor {
         }
 
         if (!command.description().equalsIgnoreCase("") && cmdLabel.equals(label)) {
-            map.getCommand(cmdLabel).setDescription(command.description());
+            Objects.requireNonNull(map.getCommand(cmdLabel)).setDescription(command.description());
         }
 
         if (!command.usage().equalsIgnoreCase("") && cmdLabel.equals(label)) {
-            map.getCommand(cmdLabel).setUsage(command.usage());
+            Objects.requireNonNull(map.getCommand(cmdLabel)).setUsage(command.usage());
         }
     }
 }
