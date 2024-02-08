@@ -1,14 +1,13 @@
 license: ""
-plugin-id: 0
 
 brewer-item:
-  name: "&6&lAutoBrewer"
+  name: "&6&lFancyBrewer"
   description:
-    - "&7Place this item on the ground to create a autobrewer."
+    - "&7Place this item on the ground to create a fancybrewer."
   enchanted: true
 
 brewer-menu:
-  title: "AutoBrewer Menu"
+  title: "FancyBrewer Menu"
   rows: 6
   buttons:
     start:
@@ -17,8 +16,8 @@ brewer-menu:
         stage-potion-types:
           - " <stage-color>► &fBrew Awkward Potion"
           - " <stage-color>► &fBrew <stage-potion-type>"
-          - " <stage-color>► &fBrew <stage-potion-type> II"
-          - " <stage-color>► &fBrew Splash <stage-potion-type>"
+          - " <stage-color>► &fBrew <stage-potion-type> <stage-potion-placeholder>"
+          - " <stage-color>► &fBrew <stage-potion-placeholder> <stage-potion-type>"
         description:
           - ""
           - "<stage-potion-type-1>"

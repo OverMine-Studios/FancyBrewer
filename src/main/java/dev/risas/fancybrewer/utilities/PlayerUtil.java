@@ -1,0 +1,22 @@
+package dev.risas.fancybrewer.utilities;
+
+import lombok.experimental.UtilityClass;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+@UtilityClass
+public class PlayerUtil {
+
+    public boolean isInventoryFull(Player player) {
+        return player.getInventory().firstEmpty() == -1;
+    }
+
+    public void dropOrGiveItem(Player player, ItemStack itemStack) {
+        if (player.getInventory().firstEmpty() == -1) {
+            player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+        }
+        else {
+            player.getInventory().addItem(itemStack);
+        }
+    }
+}
