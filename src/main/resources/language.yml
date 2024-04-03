@@ -9,10 +9,10 @@ brewer-command-messages:
     - " &7▶ &b/brewer reload &7- &fReload the plugin"
     - "&7&m------------------------------------"
   give:
-    all: "&aYou have given all online players x<amount> Auto Brewer."
-    player: "&aYou have given <player> x<amount> Auto Brewer."
+    all: "&aYou have given all online players x<amount> Fancy Brewer."
+    player: "&aYou have given <player> x<amount> Fancy Brewer."
   received:
-    player: "&aYou have received x<amount> Auto Brewer."
+    player: "&aYou have received x<amount> Fancy Brewer."
 
 brewer-messages:
   placed: "&aYou have placed a Fancy Brewer."

@@ -94,9 +94,24 @@ public enum BrewerPotionType {
             Arrays.asList(BrewerPotionStage.AWKWARD, BrewerPotionStage.INGREDIENT_1, BrewerPotionStage.INGREDIENT_2, BrewerPotionStage.INGREDIENT_3)),
     FIRE_RESISTANCE(
             "Potion of Fire Resistance",
+            ItemBuilder.createPotion("FIRE_RESISTANCE", 8227, false, false, false),
+            Arrays.asList(XMaterial.NETHER_WART.parseMaterial(), Material.MAGMA_CREAM),
+            Arrays.asList(BrewerPotionStage.AWKWARD, BrewerPotionStage.INGREDIENT_1)),
+    FIRE_RESISTANCE_EXTENDED(
+            "Potion of Fire Resistance",
             ItemBuilder.createPotion("FIRE_RESISTANCE", 8259, true, false, false),
             Arrays.asList(XMaterial.NETHER_WART.parseMaterial(), Material.MAGMA_CREAM, Material.REDSTONE),
             Arrays.asList(BrewerPotionStage.AWKWARD, BrewerPotionStage.INGREDIENT_1, BrewerPotionStage.INGREDIENT_2)),
+    FIRE_RESISTANCE_SPLASH(
+            "Potion of Fire Resistance",
+            ItemBuilder.createPotion("FIRE_RESISTANCE", 16419, false, false, true),
+            Arrays.asList(XMaterial.NETHER_WART.parseMaterial(), Material.MAGMA_CREAM, XMaterial.GUNPOWDER.parseMaterial()),
+            Arrays.asList(BrewerPotionStage.AWKWARD, BrewerPotionStage.INGREDIENT_1, BrewerPotionStage.INGREDIENT_2)),
+    FIRE_RESISTANCE_SPLASH_EXTENDED(
+            "Potion of Fire Resistance",
+            ItemBuilder.createPotion("FIRE_RESISTANCE", 16451, true, false, true),
+            Arrays.asList(XMaterial.NETHER_WART.parseMaterial(), Material.MAGMA_CREAM, Material.REDSTONE, XMaterial.GUNPOWDER.parseMaterial()),
+            Arrays.asList(BrewerPotionStage.AWKWARD, BrewerPotionStage.INGREDIENT_1, BrewerPotionStage.INGREDIENT_2, BrewerPotionStage.INGREDIENT_3)),
     POISON_SPLASH(
             "Potion of Poison",
             ItemBuilder.createPotion("POISON", 16388, true, false, true),
