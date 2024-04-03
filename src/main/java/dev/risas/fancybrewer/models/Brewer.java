@@ -242,5 +242,7 @@ public class Brewer {
     public void open(Player player, FancyBrewerPlugin plugin) {
         BrewerMenu menu = new BrewerMenu(plugin, this);
         menu.openMenu(player, plugin);
+
+        plugin.getInstance().getBrewerManager().addOpenedBrewer(player, this);
     }
 }

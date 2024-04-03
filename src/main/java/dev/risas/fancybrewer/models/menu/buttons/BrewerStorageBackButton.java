@@ -1,21 +1,24 @@
-package dev.risas.fancybrewer.utilities.menu.buttons;
+package dev.risas.fancybrewer.models.menu.buttons;
 
 import com.cryptomorin.xseries.XMaterial;
 import dev.risas.fancybrewer.FancyBrewerPlugin;
+import dev.risas.fancybrewer.models.Brewer;
 import dev.risas.fancybrewer.utilities.item.ItemBuilder;
 import dev.risas.fancybrewer.utilities.menu.Button;
-import dev.risas.fancybrewer.utilities.menu.Menu;
-import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-@AllArgsConstructor
-public class BackButton extends Button {
+public class BrewerStorageBackButton extends Button {
 
     private final FancyBrewerPlugin plugin;
-    private final Menu back;
+    private final Brewer brewer;
+
+    public BrewerStorageBackButton(FancyBrewerPlugin plugin , Brewer brewer) {
+        this.plugin = plugin;
+        this.brewer = brewer;
+    }
 
     @Override
     public ItemStack getButtonItem(Player player) {
@@ -28,6 +31,8 @@ public class BackButton extends Button {
     @Override
     public void clicked(Player player, int i, ClickType clickType, int hb) {
         playNeutral(player);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> back.openMenu(player, plugin), 1L);
+        close(player);
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> brewer.open(player, plugin), 1L);
     }
 }

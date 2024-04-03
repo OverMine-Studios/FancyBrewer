@@ -4,9 +4,9 @@ import com.google.common.collect.Maps;
 import dev.risas.fancybrewer.FancyBrewerPlugin;
 import dev.risas.fancybrewer.models.Brewer;
 import dev.risas.fancybrewer.models.BrewerStorage;
+import dev.risas.fancybrewer.models.menu.buttons.BrewerStorageBackButton;
 import dev.risas.fancybrewer.models.menu.buttons.BrewerStorageButton;
 import dev.risas.fancybrewer.utilities.menu.Button;
-import dev.risas.fancybrewer.utilities.menu.buttons.BackButton;
 import dev.risas.fancybrewer.utilities.menu.buttons.PageButton;
 import dev.risas.fancybrewer.utilities.menu.pagination.PaginatedMenu;
 import org.bukkit.entity.Player;
@@ -47,7 +47,7 @@ public class BrewerStorageMenu extends PaginatedMenu {
 
         buttons.put(getSize() - 9, new PageButton(plugin, -1, this));
         buttons.put(getSize() - 1, new PageButton(plugin, 1, this));
-        buttons.put(getSize() - 5, new BackButton(plugin, new BrewerMenu(plugin, brewer)));
+        buttons.put(getSize() - 5, new BrewerStorageBackButton(plugin, brewer));
 
         return buttons;
     }
