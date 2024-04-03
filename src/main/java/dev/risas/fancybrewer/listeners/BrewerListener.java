@@ -95,8 +95,6 @@ public class BrewerListener implements Listener {
 
                 Brewer brewer = brewerManager.getBrewer(location);
                 brewer.open(player, plugin);
-
-                brewerManager.addOpenedBrewer(player, brewer);
             }
         }
     }
@@ -111,11 +109,16 @@ public class BrewerListener implements Listener {
 
             Player player = (Player) event.getWhoClicked();
             Brewer brewer = brewerManager.getOpenedBrewer(player);
-
-            if (brewer == null || brewer.getState() != BrewerState.IDLE) return;
+            if (brewer == null) return;
 
             ItemStack currentItem = event.getCurrentItem();
             if (currentItem == null) return;
+
+            if (brewer.getState() != BrewerState.IDLE) {
+                event.setCancelled(true);
+                ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_CANT_ADD_MATERIALS);
+                return;
+            }
 
             if (currentItem.getType() == Material.GLASS_BOTTLE) {
                 if (brewer.hasFullBottles() || brewer.getBottles().size() >= 3) {

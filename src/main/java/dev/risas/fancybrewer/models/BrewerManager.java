@@ -57,7 +57,7 @@ public class BrewerManager {
     }
 
     public void addOpenedBrewer(Player player, Brewer brewer) {
-        openedBrewers.put(player.getUniqueId(), brewer);
+        openedBrewers.putIfAbsent(player.getUniqueId(), brewer);
     }
 
     public void removeOpenedBrewer(Player player) {

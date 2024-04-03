@@ -6,7 +6,7 @@ import dev.risas.fancybrewer.utilities.file.FileConfig;
 
 public class LanguageResource extends Resource {
 
-    public static String[] BREWER_COMMAND_MESSAGES_HELP;
+    public static String[] BREWER_COMMAND_MESSAGES_HELP, BREWER_MESSAGES_CANT_ADD_MATERIALS;
     public static String BREWER_COMMAND_MESSAGES_GIVE_ALL, BREWER_COMMAND_MESSAGES_GIVE_PLAYER, BREWER_COMMAND_MESSAGES_RECEIVED_PLAYER;
     public static String BREWER_MESSAGES_PLACED, BREWER_MESSAGES_REMOVED, BREWER_MESSAGES_CANT_REMOVE_WORKING,
             BREWER_MESSAGES_CANT_REMOVE_HAS_BOTTLES, BREWER_MESSAGES_CANT_REMOVE_HAS_INGREDIENTS, BREWER_MESSAGES_FULL_BOTTLES,
@@ -16,6 +16,8 @@ public class LanguageResource extends Resource {
     public void initialize(FancyBrewer plugin) {
         FileConfig languageFile = plugin.getFile("language");
         BREWER_COMMAND_MESSAGES_HELP = languageFile.getStringList("brewer-command-messages.help")
+                .toArray(new String[0]);
+        BREWER_MESSAGES_CANT_ADD_MATERIALS = languageFile.getStringList("brewer-messages.cant-add-materials")
                 .toArray(new String[0]);
         BREWER_COMMAND_MESSAGES_GIVE_ALL = languageFile.getString("brewer-command-messages.give.all");
         BREWER_COMMAND_MESSAGES_GIVE_PLAYER = languageFile.getString("brewer-command-messages.give.player");

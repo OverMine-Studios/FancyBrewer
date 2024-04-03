@@ -24,3 +24,6 @@ brewer-messages:
   full-bottles: "&cYou can't add more than 3 stack of bottles."
   need-bottles: "&cYou need to insert at least 3 bottles to be able to start brewing."
   need-ingredients: "&cYou need to insert ingredients to be able to start brewing."
+  cant-add-materials:
+    - "&cYou can't add materials while the brewer is working."
+    - "&cStop the brewer first, then remove the materials you want to add."
