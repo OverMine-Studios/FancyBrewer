@@ -103,6 +103,10 @@ public class Brewer {
         return getIngredientsAmount() > 0;
     }
 
+    public boolean hasFullIngredients() {
+        return ingredients.size() >= 4;
+    }
+
     public boolean hasBottles() {
         return getBottlesAmount() > 0;
     }

@@ -133,6 +133,12 @@ public class BrewerListener implements Listener {
                 brewer.open(player, plugin);
             }
             else if (brewerManager.getAvailableIngredients().contains(currentItem.getType())) {
+                if (brewer.hasFullIngredients()) {
+                    event.setCancelled(true);
+                    ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_FULL_INGREDIENTS);
+                    return;
+                }
+
                 brewer.addIngredient(currentItem);
                 event.setCurrentItem(null);
 

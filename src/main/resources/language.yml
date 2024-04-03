@@ -21,7 +21,8 @@ brewer-messages:
     working: "&cYou can't remove a fancy brewer while it's working."
     has-bottles: "&cYou can't remove a fancy brewer while it has bottles."
     has-ingredients: "&cYou can't remove a fancy brewer while it has ingredients."
-  full-bottles: "&cYou can't add more than 3 stack of bottles."
+  full-bottles: "&cYou can't add more than 3 bottles slots."
+  full-ingredients: "&cYou can't add more than 4 ingredients slots."
   need-bottles: "&cYou need to insert at least 3 bottles to be able to start brewing."
   need-ingredients: "&cYou need to insert ingredients to be able to start brewing."
   cant-add-materials:
