@@ -2,4 +2,5 @@ main: dev.risas.fancybrewer.FancyBrewerPlugin
 name: FancyBrewer
 version: ${project.version}
 api-version: 1.13
+author: Risas
 
