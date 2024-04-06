@@ -11,7 +11,6 @@ import java.util.List;
 
 public class ConfigResource extends Resource {
 
-    public static String LICENSE;
     public static ItemStack BREWING_ITEM;
     public static String BREWING_MENU_TITLE;
     public static int BREWING_MENU_ROWS;
@@ -28,7 +27,6 @@ public class ConfigResource extends Resource {
     @Override
     public void initialize(FancyBrewer plugin) {
         FileConfig configFile = plugin.getFile("config");
-        LICENSE = configFile.getString("license");
         BREWING_ITEM = new ItemBuilder(XMaterial.BREWING_STAND.parseMaterial())
                 .setName(configFile.getString("brewer-item.name"))
                 .setLore(configFile.getStringList("brewer-item.description"))
