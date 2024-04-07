@@ -3,6 +3,7 @@ package dev.risas.fancybrewer.models.menu.buttons;
 import dev.risas.fancybrewer.FancyBrewerPlugin;
 import dev.risas.fancybrewer.models.Brewer;
 import dev.risas.fancybrewer.models.BrewerState;
+import dev.risas.fancybrewer.utilities.NBTUtil;
 import dev.risas.fancybrewer.utilities.item.ItemBuilder;
 import dev.risas.fancybrewer.utilities.menu.Button;
 import org.bukkit.Material;
@@ -41,11 +42,9 @@ public class BrewingIngredientButton extends Button {
                 ItemStack ingredient = brewer.getIngredient();
 
                 if (ingredient.getType() != Material.AIR && brewer.getIngredients().contains(ingredient)) {
-                    player.getInventory().addItem(ingredient);
-
                     playNeutral(player);
 
-                    brewer.removeIngredient();
+                    brewer.removeIngredient(player, ingredient);
                     brewer.open(player, plugin);
                 }
             }

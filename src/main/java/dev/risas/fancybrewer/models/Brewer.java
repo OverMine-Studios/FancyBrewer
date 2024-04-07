@@ -3,6 +3,7 @@ package dev.risas.fancybrewer.models;
 import dev.risas.fancybrewer.FancyBrewerPlugin;
 import dev.risas.fancybrewer.models.menu.BrewerMenu;
 import dev.risas.fancybrewer.models.task.BrewingTask;
+import dev.risas.fancybrewer.utilities.NBTUtil;
 import dev.risas.fancybrewer.utilities.TimeUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -75,11 +76,12 @@ public class Brewer {
     }
 
     public void addIngredient(ItemStack itemStack) {
-        ingredients.add(itemStack.clone());
+        ingredients.add(NBTUtil.serializeAntiDupeItem(itemStack));
         this.checkAndSetPotionType();
     }
 
-    public void removeIngredient() {
+    public void removeIngredient(Player player, ItemStack itemStack) {
+        player.getInventory().addItem(NBTUtil.deserializeAntiDupeItem(itemStack));
         ingredients.remove(0);
         this.checkAndSetPotionType();
     }
@@ -134,11 +136,12 @@ public class Brewer {
     }
 
     public void addBottle(ItemStack itemStack) {
-        bottles.add(itemStack.clone());
+        bottles.add(NBTUtil.serializeAntiDupeItem(itemStack));
         this.checkAndSetPotionType();
     }
 
-    public void removeBottle() {
+    public void removeBottle(Player player, ItemStack itemStack) {
+        player.getInventory().addItem(NBTUtil.deserializeAntiDupeItem(itemStack));
         bottles.remove(0);
         this.checkAndSetPotionType();
     }

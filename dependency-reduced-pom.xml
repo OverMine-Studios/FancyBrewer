@@ -39,6 +39,10 @@
               <pattern>com.cryptomorin.xseries</pattern>
               <shadedPattern>dev.risas.fancybrewer.shade.xseries</shadedPattern>
             </relocation>
+            <relocation>
+              <pattern>de.tr7zw.changeme.nbtapi</pattern>
+              <shadedPattern>dev.risas.fancybrewer.shade.nbtapi</shadedPattern>
+            </relocation>
           </relocations>
           <filters>
             <filter>
@@ -70,6 +74,10 @@
     <repository>
       <id>spigot-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>codemc-repo</id>
+      <url>https://repo.codemc.io/repository/maven-public/</url>
     </repository>
   </repositories>
   <dependencies>

@@ -19,6 +19,11 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+            <layout>default</layout>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -43,6 +48,13 @@
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
             <version>9.9.0</version>
+        </dependency>
+
+        <!-- NBTAPI -->
+        <dependency>
+            <groupId>de.tr7zw</groupId>
+            <artifactId>item-nbt-api</artifactId>
+            <version>2.12.3</version>
         </dependency>
     </dependencies>
 
@@ -81,6 +93,10 @@
                         <relocation>
                             <pattern>com.cryptomorin.xseries</pattern>
                             <shadedPattern>dev.risas.fancybrewer.shade.xseries</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                            <shadedPattern>dev.risas.fancybrewer.shade.nbtapi</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>

@@ -41,11 +41,9 @@ public class BrewingBottleButton extends Button {
                 ItemStack bottle = brewer.getBottle();
 
                 if (bottle.getType() == Material.GLASS_BOTTLE) {
-                    player.getInventory().addItem(bottle);
-
                     playNeutral(player);
 
-                    brewer.removeBottle();
+                    brewer.removeBottle(player, bottle);
                     brewer.open(player, plugin);
                 }
             }
