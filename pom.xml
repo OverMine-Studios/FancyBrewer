@@ -83,6 +83,22 @@
                 <configuration>
                     <relocations>
                         <relocation>
+                            <pattern>org.intellij</pattern>
+                            <shadedPattern>dev.risas.fancybrewer.shade.org.intellij</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.jetbrains</pattern>
+                            <shadedPattern>dev.risas.fancybrewer.shade.org.jetbrains</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.json</pattern>
+                            <shadedPattern>dev.risas.fancybrewer.shade.org.json</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>kotlin</pattern>
+                            <shadedPattern>dev.risas.fancybrewer.shade.kotlin</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>okhttp3</pattern>
                             <shadedPattern>dev.risas.fancybrewer.shade.okhttp3</shadedPattern>
                         </relocation>
