@@ -64,6 +64,10 @@ public class FancyBrewer {
         });
     }
 
+    public void onDisable() {
+        brewerManager.onDisable();
+    }
+
     public void onReload() {
         files.values().forEach(FileConfig::reload);
         resourceManager.initialize();

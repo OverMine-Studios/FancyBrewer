@@ -14,4 +14,9 @@ public class FancyBrewerPlugin extends JavaPlugin {
         this.instance = new FancyBrewer(this);
         this.instance.onEnable();
     }
+
+    @Override
+    public void onDisable() {
+        this.instance.onDisable();
+    }
 }

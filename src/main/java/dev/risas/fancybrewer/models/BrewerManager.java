@@ -1,16 +1,17 @@
 package dev.risas.fancybrewer.models;
 
+import dev.risas.fancybrewer.models.plugin.FancyBrewer;
 import dev.risas.fancybrewer.resources.types.ConfigResource;
-import dev.risas.fancybrewer.utilities.BukkitUtil;
 import dev.risas.fancybrewer.utilities.NBTUtil;
+import dev.risas.fancybrewer.utilities.SerializeUtil;
 import dev.risas.fancybrewer.utilities.file.FileConfig;
 import dev.risas.fancybrewer.utilities.item.ItemBuilder;
-import dev.risas.fancybrewer.models.plugin.FancyBrewer;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -50,7 +51,7 @@ public class BrewerManager {
 
     public void addBrewer(Brewer brewer) {
         brewers.put(brewer.getLocation(), brewer);
-        saveBrewerConfig(brewer, false);
+        saveBrewerConfig(brewer, brewerDataFile.getConfiguration().getConfigurationSection("brewers"), false, true);
     }
 
     public void removeBrewer(Brewer brewer) {
@@ -72,7 +73,7 @@ public class BrewerManager {
         }
 
         brewers.remove(brewer.getLocation());
-        saveBrewerConfig(brewer, true);
+        saveBrewerConfig(brewer, brewerDataFile.getConfiguration().getConfigurationSection("brewers"), true, true);
     }
 
     public void addOpenedBrewer(Player player, Brewer brewer) {
@@ -97,25 +98,40 @@ public class BrewerManager {
                 .build());
     }
 
-    private void saveBrewerConfig(Brewer brewer, boolean remove) {
-        String serializedLocation = BukkitUtil.serializeBlockLocation(brewer.getLocation());
-        List<String> locations = brewerDataFile.getStringList("brewers");
+    private void saveBrewerConfig(Brewer brewer, ConfigurationSection section, boolean remove, boolean save) {
+        String id = SerializeUtil.serializeBlockLocation(brewer.getLocation());
 
         if (remove) {
-            locations.remove(serializedLocation);
+            section.set(id, null);
         }
         else {
-            locations.add(serializedLocation);
+            section.set(id + ".bottles", SerializeUtil.serializeItemStackList(brewer.getBottles()));
+            section.set(id + ".ingredients", SerializeUtil.serializeItemStackList(brewer.getIngredients()));
+            section.set(id + ".storage", SerializeUtil.serializeItemStackList(brewer.getStorage().getPotions()));
         }
 
-        brewerDataFile.getConfiguration().set("brewers", locations);
-        brewerDataFile.save();
+        if (save) brewerDataFile.save();
     }
 
     private void loadBrewers() {
-        for (String key : brewerDataFile.getStringList("brewers")) {
-            Location location = BukkitUtil.deserializeBlockLocation(key);
-            brewers.put(location, new Brewer(location));
-        }
+        ConfigurationSection section = brewerDataFile.getConfiguration().getConfigurationSection("brewers");
+        if (section == null) throw new IllegalStateException("Brewer data is empty.");
+
+        section.getKeys(false).forEach(key -> {
+            Location location = SerializeUtil.deserializeBlockLocation(key);
+
+            Brewer brewer = new Brewer(location);
+            brewer.setBottles(SerializeUtil.deserializeItemStackList(section.getString(key + ".bottles")));
+            brewer.setIngredients(SerializeUtil.deserializeItemStackList(section.getString(key + ".ingredients")));
+            brewer.getStorage().setPotions(SerializeUtil.deserializeItemStackList(section.getString(key + ".storage")));
+            brewer.checkAndSetPotionType();
+            brewers.put(location, brewer);
+        });
+    }
+
+    public void onDisable() {
+        ConfigurationSection section = brewerDataFile.getConfiguration().getConfigurationSection("brewers");
+        brewers.values().forEach(brewer -> saveBrewerConfig(brewer, section, false, false));
+        brewerDataFile.save();
     }
 }
