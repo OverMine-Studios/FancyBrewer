@@ -2,6 +2,7 @@ package dev.risas.fancybrewer.models;
 
 import dev.risas.fancybrewer.resources.types.ConfigResource;
 import dev.risas.fancybrewer.utilities.BukkitUtil;
+import dev.risas.fancybrewer.utilities.NBTUtil;
 import dev.risas.fancybrewer.utilities.file.FileConfig;
 import dev.risas.fancybrewer.utilities.item.ItemBuilder;
 import dev.risas.fancybrewer.models.plugin.FancyBrewer;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -48,12 +50,29 @@ public class BrewerManager {
 
     public void addBrewer(Brewer brewer) {
         brewers.put(brewer.getLocation(), brewer);
-        saveBrewerConfig(brewer);
+        saveBrewerConfig(brewer, false);
     }
 
     public void removeBrewer(Brewer brewer) {
+        Location location = brewer.getLocation();
+        World world = location.getWorld();
+
+        if (world != null) {
+            for (ItemStack bottle : brewer.getBottles()) {
+                world.dropItemNaturally(location, NBTUtil.deserializeAntiDupeItem(bottle));
+            }
+
+            for (ItemStack ingredient : brewer.getIngredients()) {
+                world.dropItemNaturally(location, NBTUtil.deserializeAntiDupeItem(ingredient));
+            }
+
+            for (ItemStack potion : brewer.getStorage().getPotions()) {
+                world.dropItemNaturally(location, potion);
+            }
+        }
+
         brewers.remove(brewer.getLocation());
-        removeBrewerConfig(brewer);
+        saveBrewerConfig(brewer, true);
     }
 
     public void addOpenedBrewer(Player player, Brewer brewer) {
@@ -78,21 +97,16 @@ public class BrewerManager {
                 .build());
     }
 
-    private void saveBrewerConfig(Brewer brewer) {
+    private void saveBrewerConfig(Brewer brewer, boolean remove) {
         String serializedLocation = BukkitUtil.serializeBlockLocation(brewer.getLocation());
         List<String> locations = brewerDataFile.getStringList("brewers");
 
-        locations.add(serializedLocation);
-
-        brewerDataFile.getConfiguration().set("brewers", locations);
-        brewerDataFile.save();
-    }
-
-    private void removeBrewerConfig(Brewer brewer) {
-        String serializedLocation = BukkitUtil.serializeBlockLocation(brewer.getLocation());
-        List<String> locations = brewerDataFile.getStringList("brewers");
-
-        locations.remove(serializedLocation);
+        if (remove) {
+            locations.remove(serializedLocation);
+        }
+        else {
+            locations.add(serializedLocation);
+        }
 
         brewerDataFile.getConfiguration().set("brewers", locations);
         brewerDataFile.save();

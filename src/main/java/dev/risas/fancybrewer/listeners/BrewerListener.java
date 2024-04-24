@@ -62,16 +62,6 @@ public class BrewerListener implements Listener {
                 return;
             }
 
-            if (brewer.hasBottles()) {
-                ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_CANT_REMOVE_HAS_BOTTLES);
-                return;
-            }
-
-            if (brewer.hasIngredients()) {
-                ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_CANT_REMOVE_HAS_INGREDIENTS);
-                return;
-            }
-
             brewerManager.removeBrewer(brewer);
             block.setType(Material.AIR);
 
