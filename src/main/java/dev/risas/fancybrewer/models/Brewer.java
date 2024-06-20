@@ -143,38 +143,18 @@ public class Brewer {
         ItemStack bottle = bottles.get(index);
         int actualAmount = bottle.getAmount();
 
-        if (actualAmount < 3) {
-            List<ItemStack> toRemove = new ArrayList<>();
-            int bottleCount = 0;
+        if (actualAmount <= 3) {
+            bottles.remove(index);
 
-            for (ItemStack nextBottle : bottles) {
-                if (nextBottle == bottle) continue;
+            if (bottles.size() > 1) {
+                int newAmount = actualAmount - 3;
 
-                int nextAmount = nextBottle.getAmount();
-                bottleCount = bottleCount + nextAmount;
-
-                if (nextAmount < 3) toRemove.add(nextBottle);
-            }
-
-            bottle.setAmount(actualAmount + bottleCount - 3);
-
-            for (int i = 0; i < toRemove.size(); i++) {
-                bottles.remove(1);
+                ItemStack nextBottle = bottles.get(index);
+                nextBottle.setAmount(nextBottle.getAmount() + (newAmount));
             }
         }
         else {
             bottle.setAmount(actualAmount - 3);
-
-            int newAmount = bottle.getAmount();
-
-            if (newAmount < 3) {
-                int nextIndex = bottles.size() - 1;
-                if (index == nextIndex) return;
-
-                ItemStack nextBottle = bottles.get(nextIndex);
-                nextBottle.setAmount(nextBottle.getAmount() + newAmount);
-                bottles.remove(0);
-            }
         }
     }
 
