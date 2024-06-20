@@ -22,6 +22,11 @@ public enum BrewerPotionType {
             ItemBuilder.createPotion("INSTANT_HEAL", 16421, false, true, true),
             Arrays.asList(XMaterial.NETHER_WART.parseMaterial(), XMaterial.GLISTERING_MELON_SLICE.parseMaterial(), Material.GLOWSTONE_DUST, XMaterial.GUNPOWDER.parseMaterial()),
             Arrays.asList(BrewerPotionStage.AWKWARD, BrewerPotionStage.INGREDIENT_1, BrewerPotionStage.INGREDIENT_2, BrewerPotionStage.INGREDIENT_3)),
+    INSTANT_HEALTH_SPLASH_OTHER(
+            "Potion of Healing",
+            ItemBuilder.createPotion("INSTANT_HEAL", 16421, false, true, true),
+            Arrays.asList(XMaterial.NETHER_WART.parseMaterial(), XMaterial.GLISTERING_MELON_SLICE.parseMaterial(), XMaterial.GUNPOWDER.parseMaterial(), Material.GLOWSTONE_DUST),
+            Arrays.asList(BrewerPotionStage.AWKWARD, BrewerPotionStage.INGREDIENT_1, BrewerPotionStage.INGREDIENT_2, BrewerPotionStage.INGREDIENT_3)),
     SPEED_I(
             "Potion of Swiftness",
             ItemBuilder.createPotion("SPEED", 8194, false, false, false),
