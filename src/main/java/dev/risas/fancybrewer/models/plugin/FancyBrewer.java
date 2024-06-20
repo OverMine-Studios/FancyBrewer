@@ -4,8 +4,8 @@ import dev.risas.fancybrewer.FancyBrewerPlugin;
 import dev.risas.fancybrewer.commands.BrewerCommand;
 import dev.risas.fancybrewer.commands.subcommands.BrewerGiveCommand;
 import dev.risas.fancybrewer.commands.subcommands.BrewerReloadCommand;
+import dev.risas.fancybrewer.controllers.BrewerManager;
 import dev.risas.fancybrewer.listeners.BrewerListener;
-import dev.risas.fancybrewer.models.BrewerManager;
 import dev.risas.fancybrewer.resources.ResourceManager;
 import dev.risas.fancybrewer.utilities.ChatUtil;
 import dev.risas.fancybrewer.utilities.command.CommandManager;
@@ -53,11 +53,12 @@ public class FancyBrewer {
         commandManager.registerCommands(new BrewerReloadCommand(this));
         commandManager.registerCommands(new BrewerGiveCommand(this));
 
+
         ChatUtil.logger(new String[]{
                 ChatUtil.NORMAL_LINE,
                 "&9&lFancyBrewer &7version &f" + plugin.getDescription().getVersion(),
                 "",
-                "&7License Status: &aON",
+                "&7License Status: &aSUCCESS",
                 "",
                 "&7For support join at &9https://risas.me/discord",
                 ChatUtil.NORMAL_LINE

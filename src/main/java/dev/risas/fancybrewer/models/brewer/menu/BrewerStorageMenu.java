@@ -1,11 +1,11 @@
-package dev.risas.fancybrewer.models.menu;
+package dev.risas.fancybrewer.models.brewer.menu;
 
 import com.google.common.collect.Maps;
 import dev.risas.fancybrewer.FancyBrewerPlugin;
-import dev.risas.fancybrewer.models.Brewer;
-import dev.risas.fancybrewer.models.BrewerStorage;
-import dev.risas.fancybrewer.models.menu.buttons.BrewerStorageBackButton;
-import dev.risas.fancybrewer.models.menu.buttons.BrewerStorageButton;
+import dev.risas.fancybrewer.models.brewer.Brewer;
+import dev.risas.fancybrewer.models.brewer.BrewerStorage;
+import dev.risas.fancybrewer.models.brewer.menu.buttons.BrewerStorageBackButton;
+import dev.risas.fancybrewer.models.brewer.menu.buttons.BrewerStorageButton;
 import dev.risas.fancybrewer.utilities.menu.Button;
 import dev.risas.fancybrewer.utilities.menu.buttons.PageButton;
 import dev.risas.fancybrewer.utilities.menu.pagination.PaginatedMenu;

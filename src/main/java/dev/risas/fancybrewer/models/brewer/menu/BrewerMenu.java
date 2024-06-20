@@ -1,9 +1,9 @@
-package dev.risas.fancybrewer.models.menu;
+package dev.risas.fancybrewer.models.brewer.menu;
 
 import dev.risas.fancybrewer.FancyBrewerPlugin;
-import dev.risas.fancybrewer.models.Brewer;
-import dev.risas.fancybrewer.models.BrewerState;
-import dev.risas.fancybrewer.models.menu.buttons.*;
+import dev.risas.fancybrewer.models.brewer.Brewer;
+import dev.risas.fancybrewer.models.brewer.BrewerState;
+import dev.risas.fancybrewer.models.brewer.menu.buttons.*;
 import dev.risas.fancybrewer.resources.types.ConfigResource;
 import dev.risas.fancybrewer.utilities.ChatUtil;
 import dev.risas.fancybrewer.utilities.menu.Button;

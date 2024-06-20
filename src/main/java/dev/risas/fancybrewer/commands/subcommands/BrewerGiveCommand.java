@@ -1,6 +1,6 @@
 package dev.risas.fancybrewer.commands.subcommands;
 
-import dev.risas.fancybrewer.models.BrewerManager;
+import dev.risas.fancybrewer.controllers.BrewerManager;
 import dev.risas.fancybrewer.models.plugin.FancyBrewer;
 import dev.risas.fancybrewer.resources.types.LanguageResource;
 import dev.risas.fancybrewer.utilities.ChatUtil;

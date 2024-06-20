@@ -1,4 +1,4 @@
-package dev.risas.fancybrewer.models;
+package dev.risas.fancybrewer.models.brewer;
 
 import lombok.Getter;
 import lombok.Setter;

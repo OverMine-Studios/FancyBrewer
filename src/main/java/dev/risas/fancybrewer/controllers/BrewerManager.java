@@ -1,5 +1,7 @@
-package dev.risas.fancybrewer.models;
+package dev.risas.fancybrewer.controllers;
 
+import dev.risas.fancybrewer.models.brewer.Brewer;
+import dev.risas.fancybrewer.models.brewer.BrewerPotionType;
 import dev.risas.fancybrewer.models.plugin.FancyBrewer;
 import dev.risas.fancybrewer.resources.types.ConfigResource;
 import dev.risas.fancybrewer.utilities.NBTUtil;

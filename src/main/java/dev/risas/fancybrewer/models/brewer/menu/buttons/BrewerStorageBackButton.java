@@ -1,8 +1,8 @@
-package dev.risas.fancybrewer.models.menu.buttons;
+package dev.risas.fancybrewer.models.brewer.menu.buttons;
 
 import com.cryptomorin.xseries.XMaterial;
 import dev.risas.fancybrewer.FancyBrewerPlugin;
-import dev.risas.fancybrewer.models.Brewer;
+import dev.risas.fancybrewer.models.brewer.Brewer;
 import dev.risas.fancybrewer.utilities.item.ItemBuilder;
 import dev.risas.fancybrewer.utilities.menu.Button;
 import org.bukkit.Bukkit;

@@ -1,4 +1,4 @@
-package dev.risas.fancybrewer.models;
+package dev.risas.fancybrewer.models.brewer;
 
 import dev.risas.fancybrewer.utilities.TimeUtil;
 import lombok.Getter;

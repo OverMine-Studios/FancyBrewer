@@ -1,9 +1,9 @@
-package dev.risas.fancybrewer.models.task;
+package dev.risas.fancybrewer.models.brewer.task;
 
 import dev.risas.fancybrewer.FancyBrewerPlugin;
-import dev.risas.fancybrewer.models.Brewer;
-import dev.risas.fancybrewer.models.BrewerPotionStage;
-import dev.risas.fancybrewer.models.BrewerState;
+import dev.risas.fancybrewer.models.brewer.Brewer;
+import dev.risas.fancybrewer.models.brewer.BrewerPotionStage;
+import dev.risas.fancybrewer.models.brewer.BrewerState;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 

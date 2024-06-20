@@ -1,4 +1,4 @@
-package dev.risas.fancybrewer.models;
+package dev.risas.fancybrewer.models.brewer;
 
 import com.cryptomorin.xseries.XMaterial;
 import dev.risas.fancybrewer.utilities.item.ItemBuilder;

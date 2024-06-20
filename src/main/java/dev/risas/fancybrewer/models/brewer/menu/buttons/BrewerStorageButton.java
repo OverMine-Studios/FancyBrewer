@@ -1,6 +1,6 @@
-package dev.risas.fancybrewer.models.menu.buttons;
+package dev.risas.fancybrewer.models.brewer.menu.buttons;
 
-import dev.risas.fancybrewer.models.BrewerStorage;
+import dev.risas.fancybrewer.models.brewer.BrewerStorage;
 import dev.risas.fancybrewer.utilities.PlayerUtil;
 import dev.risas.fancybrewer.utilities.menu.Button;
 import lombok.AllArgsConstructor;

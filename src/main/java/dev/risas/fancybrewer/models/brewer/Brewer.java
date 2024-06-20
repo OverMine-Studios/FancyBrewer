@@ -1,8 +1,8 @@
-package dev.risas.fancybrewer.models;
+package dev.risas.fancybrewer.models.brewer;
 
 import dev.risas.fancybrewer.FancyBrewerPlugin;
-import dev.risas.fancybrewer.models.menu.BrewerMenu;
-import dev.risas.fancybrewer.models.task.BrewingTask;
+import dev.risas.fancybrewer.models.brewer.menu.BrewerMenu;
+import dev.risas.fancybrewer.models.brewer.task.BrewingTask;
 import dev.risas.fancybrewer.utilities.NBTUtil;
 import dev.risas.fancybrewer.utilities.TimeUtil;
 import lombok.Getter;
