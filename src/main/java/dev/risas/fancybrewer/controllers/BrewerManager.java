@@ -62,14 +62,17 @@ public class BrewerManager {
 
         if (world != null) {
             for (ItemStack bottle : brewer.getBottles()) {
+                if (bottle == null || bottle.getType() == Material.AIR) continue;
                 world.dropItemNaturally(location, NBTUtil.deserializeAntiDupeItem(bottle));
             }
 
             for (ItemStack ingredient : brewer.getIngredients()) {
+                if (ingredient == null || ingredient.getType() == Material.AIR) continue;
                 world.dropItemNaturally(location, NBTUtil.deserializeAntiDupeItem(ingredient));
             }
 
             for (ItemStack potion : brewer.getStorage().getPotions()) {
+                if (potion == null || potion.getType() == Material.AIR) continue;
                 world.dropItemNaturally(location, potion);
             }
         }

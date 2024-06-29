@@ -3,6 +3,7 @@ package dev.risas.fancybrewer.models.brewer.task;
 import dev.risas.fancybrewer.FancyBrewerPlugin;
 import dev.risas.fancybrewer.models.brewer.Brewer;
 import dev.risas.fancybrewer.models.brewer.BrewerPotionStage;
+import dev.risas.fancybrewer.models.brewer.BrewerPotionType;
 import dev.risas.fancybrewer.models.brewer.BrewerState;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -49,7 +50,9 @@ public class BrewingTask extends BukkitRunnable {
                     }
                 }
 
-                if (brewer.getBottlesAmount() < 3 || brewer.getIngredientsAmount() <= 0) {
+                BrewerPotionType potionType = brewer.checkPotionType();
+
+                if (brewer.getBottlesAmount() < 3 || potionType == null) {
                     brewer.resetBrewer();
                     cancel();
                     return;

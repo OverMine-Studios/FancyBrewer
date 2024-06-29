@@ -43,6 +43,7 @@ public class BrewingBottleButton extends Button {
                 if (bottle.getType() == Material.GLASS_BOTTLE) {
                     playNeutral(player);
 
+                    brewer.resetIngredientAir();
                     brewer.removeBottle(player, bottle);
                     brewer.open(player, plugin);
                 }

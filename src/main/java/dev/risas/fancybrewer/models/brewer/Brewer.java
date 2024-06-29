@@ -42,6 +42,9 @@ public class Brewer {
     }
 
     public void startBrewing(FancyBrewerPlugin plugin) {
+        BrewingTask brewingPotionStageTask = new BrewingTask(plugin, this);
+        brewingPotionStageTask.start();
+
         if (currentStage == null) {
             setStartedTime(System.currentTimeMillis());
             setEstimatedTime(getEstimatedTimeByPotionType());
@@ -49,9 +52,6 @@ public class Brewer {
             decrementBottle();
             decrementIngredient(currentStage.getIndex());
         }
-
-        BrewingTask brewingPotionStageTask = new BrewingTask(plugin, this);
-        brewingPotionStageTask.start();
     }
 
     public void checkAndSetPotionType() {
@@ -71,6 +71,15 @@ public class Brewer {
         }
     }
 
+    public BrewerPotionType checkPotionType() {
+        for (BrewerPotionType type : BrewerPotionType.values()) {
+            if (type.getIngredients().equals(getIngredientsMaterial())) {
+                return type;
+            }
+        }
+        return null;
+    }
+
     public ItemStack getIngredient() {
         return ingredients.get(0);
     }
@@ -88,17 +97,17 @@ public class Brewer {
 
     public void decrementIngredient(int index) {
         ItemStack itemStack = ingredients.get(index);
-        itemStack.setAmount(itemStack.getAmount() - 1);
-    }
 
-    public int getIngredientsAmount() {
-        int ingredientsAmount = 0;
+        if (itemStack != null) {
+            int amount = itemStack.getAmount();
 
-        for (ItemStack itemStack : ingredients) {
-            ingredientsAmount = itemStack.getAmount() + ingredientsAmount;
+            if (amount <= 1) {
+                ingredients.set(index, new ItemStack(Material.AIR));
+            }
+            else {
+                itemStack.setAmount(amount - 1);
+            }
         }
-
-        return ingredientsAmount;
     }
 
     public boolean hasFullIngredients() {
@@ -204,6 +213,10 @@ public class Brewer {
         }
     }
 
+    public void resetIngredientAir() {
+        ingredients.removeIf(itemStack -> itemStack.getType() == Material.AIR);
+    }
+
     public void resetBrewer() {
         this.resetStage();
         this.setPotionType(null);
@@ -212,10 +225,7 @@ public class Brewer {
         this.setStartedTime(0);
         this.setEstimatedTime(0);
         this.setState(BrewerState.IDLE);
-
-        if (getIngredientsAmount() <= 0) {
-            this.setIngredients(new ArrayList<>());
-        }
+        this.resetIngredientAir();
     }
 
     public void open(Player player, FancyBrewerPlugin plugin) {

@@ -36,16 +36,15 @@ public class BrewingIngredientButton extends Button {
     public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
         if (brewer.getState() == BrewerState.IDLE && clickType == ClickType.LEFT) {
             ItemStack itemClicked = getButtonItem(player);
+            if (itemClicked.getType() == Material.AIR) return;
 
-            if (itemClicked.getType() != Material.AIR) {
-                ItemStack ingredient = brewer.getIngredient();
+            ItemStack ingredient = brewer.getIngredient();
 
-                if (ingredient.getType() != Material.AIR && brewer.getIngredients().contains(ingredient)) {
-                    playNeutral(player);
+            if (ingredient.getType() != Material.AIR && brewer.getIngredients().contains(ingredient)) {
+                playNeutral(player);
 
-                    brewer.removeIngredient(player, ingredient);
-                    brewer.open(player, plugin);
-                }
+                brewer.removeIngredient(player, ingredient);
+                brewer.open(player, plugin);
             }
         }
     }
