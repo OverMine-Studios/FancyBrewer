@@ -1,0 +1,50 @@
+potions:
+  instant-health-2:
+    name: "Potion of Healing"
+    potion-item:
+      type: "INSTANT_HEAL" #https://helpch.at/docs/1.20.2/org/bukkit/potion/PotionType.html
+      data: 8229 # Only for 1.8 version
+      extended: false # This option is for a longer duration
+      upgraded: true # This option is to increase the level
+      splash: false # This option is to make the potion splash
+    ingredients:
+      - NETHER_WART
+      - GLISTERING_MELON_SLICE
+      - GLOWSTONE_DUST
+  instant-health-splash-2:
+    name: "Potion of Healing"
+    potion-item:
+      type: "INSTANT_HEAL"
+      data: 16421
+      extended: false
+      upgraded: true
+      splash: true
+    ingredients:
+      - NETHER_WART
+      - GLISTERING_MELON_SLICE
+      - GLOWSTONE_DUST
+      - GUNPOWDER
+  speed-2:
+    name: "Potion of Swiftness"
+    potion-item:
+      type: "SPEED"
+      data: 8226
+      extended: false
+      upgraded: true
+      splash: false
+    ingredients:
+      - NETHER_WART
+      - SUGAR
+      - GLOWSTONE_DUST
+  fire-resistance-extended:
+    name: "Potion of Fire Resistance"
+    potion-item:
+      type: "FIRE_RESISTANCE"
+      data: 8259
+      extended: true
+      upgraded: false
+      splash: false
+    ingredients:
+      - NETHER_WART
+      - MAGMA_CREAM
+      - REDSTONE

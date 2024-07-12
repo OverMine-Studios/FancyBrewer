@@ -1,7 +1,8 @@
 package dev.risas.fancybrewer.listeners;
 
 import dev.risas.fancybrewer.FancyBrewerPlugin;
-import dev.risas.fancybrewer.controllers.BrewerManager;
+import dev.risas.fancybrewer.controllers.BrewerController;
+import dev.risas.fancybrewer.controllers.BrewerPotionController;
 import dev.risas.fancybrewer.models.brewer.Brewer;
 import dev.risas.fancybrewer.models.brewer.BrewerState;
 import dev.risas.fancybrewer.resources.types.ConfigResource;
@@ -29,45 +30,47 @@ import org.bukkit.inventory.ItemStack;
 public class BrewerListener implements Listener {
 
     private final FancyBrewerPlugin plugin;
-    private final BrewerManager brewerManager;
+    private final BrewerPotionController brewerPotionController;
+    private final BrewerController brewerManager;
 
     public BrewerListener(FancyBrewerPlugin plugin) {
         this.plugin = plugin;
+        this.brewerPotionController = plugin.getInstance().getBrewerPotionController();
         this.brewerManager = plugin.getInstance().getBrewerManager();
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     private void onBrewerPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
+        if (!brewerManager.isBrewer(player.getItemInHand())) return;
 
-        if (brewerManager.isBrewer(player.getItemInHand())) {
-            brewerManager.addBrewer(new Brewer(event.getBlock().getLocation()));
-            ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_PLACED);
-        }
+        brewerManager.addBrewer(new Brewer(brewerPotionController, event.getBlock().getLocation()));
+        ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_PLACED);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     private void onBrewerBreak(BlockBreakEvent event) {
-        Player player = event.getPlayer();
         Block block = event.getBlock();
         Location location = block.getLocation();
+        if (!brewerManager.existBrewer(location)) return;
 
-        if (brewerManager.existBrewer(location)) {
-            event.setCancelled(true);
+        Player player = event.getPlayer();
 
-            Brewer brewer = brewerManager.getBrewer(location);
+        event.setCancelled(true);
 
-            if (brewer.getState() != BrewerState.IDLE) {
-                ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_CANT_REMOVE_WORKING);
-                return;
-            }
+        Brewer brewer = brewerManager.getBrewer(location);
 
-            brewerManager.removeBrewer(brewer);
-            block.setType(Material.AIR);
-
-            PlayerUtil.dropOrGiveItem(player, ConfigResource.BREWING_ITEM);
-            ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_REMOVED);
+        if (brewer.getState() != BrewerState.IDLE) {
+            ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_CANT_REMOVE_WORKING);
+            return;
         }
+
+        brewerManager.removeBrewer(brewer);
+        block.setType(Material.AIR);
+
+        PlayerUtil.dropOrGiveItem(player, ConfigResource.BREWING_ITEM);
+        ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_REMOVED);
+
     }
 
     @EventHandler(ignoreCancelled = true)

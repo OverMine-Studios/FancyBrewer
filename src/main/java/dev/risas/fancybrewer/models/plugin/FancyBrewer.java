@@ -4,8 +4,10 @@ import dev.risas.fancybrewer.FancyBrewerPlugin;
 import dev.risas.fancybrewer.commands.BrewerCommand;
 import dev.risas.fancybrewer.commands.subcommands.BrewerGiveCommand;
 import dev.risas.fancybrewer.commands.subcommands.BrewerReloadCommand;
-import dev.risas.fancybrewer.controllers.BrewerManager;
+import dev.risas.fancybrewer.controllers.BrewerController;
+import dev.risas.fancybrewer.controllers.BrewerPotionController;
 import dev.risas.fancybrewer.listeners.BrewerListener;
+import dev.risas.fancybrewer.models.license.License;
 import dev.risas.fancybrewer.resources.ResourceManager;
 import dev.risas.fancybrewer.utilities.ChatUtil;
 import dev.risas.fancybrewer.utilities.command.CommandManager;
@@ -25,7 +27,8 @@ public class FancyBrewer {
 
     private ResourceManager resourceManager;
     private CommandManager commandManager;
-    private BrewerManager brewerManager;
+    private BrewerPotionController brewerPotionController;
+    private BrewerController brewerManager;
 
     public FancyBrewer(FancyBrewerPlugin plugin) {
         this.plugin = plugin;
@@ -38,10 +41,11 @@ public class FancyBrewer {
         files.put("language", new FileConfig(plugin, "language.yml"));
         files.put("brewer-data", new FileConfig(plugin, "data/brewer-data.yml"));
 
-        // Load managers
-        this.resourceManager = new ResourceManager(this);
-        this.commandManager = new CommandManager(plugin);
-        this.brewerManager = new BrewerManager(this);
+            // Load managers
+            this.resourceManager = new ResourceManager(this);
+            this.commandManager = new CommandManager(plugin);
+            this.brewerPotionController = new BrewerPotionController(this);
+            this.brewerManager = new BrewerController(this);
 
         // Register listeners
         PluginManager pluginManager = Bukkit.getPluginManager();
@@ -72,6 +76,7 @@ public class FancyBrewer {
     public void onReload() {
         files.values().forEach(FileConfig::reload);
         resourceManager.initialize();
+        brewerPotionController.onReload();
     }
 
     public FileConfig getFile(String name) {

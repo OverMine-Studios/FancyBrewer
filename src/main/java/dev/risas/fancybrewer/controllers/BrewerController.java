@@ -1,7 +1,7 @@
 package dev.risas.fancybrewer.controllers;
 
 import dev.risas.fancybrewer.models.brewer.Brewer;
-import dev.risas.fancybrewer.models.brewer.BrewerPotionType;
+import dev.risas.fancybrewer.models.brewer.BrewerPotion;
 import dev.risas.fancybrewer.models.plugin.FancyBrewer;
 import dev.risas.fancybrewer.resources.types.ConfigResource;
 import dev.risas.fancybrewer.utilities.NBTUtil;
@@ -20,14 +20,17 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 @Getter @Setter
-public class BrewerManager {
+public class BrewerController {
 
     private final FileConfig brewerDataFile;
+    private final BrewerPotionController brewerPotionController;
+
     private final Map<Location, Brewer> brewers;
     private final Map<UUID, Brewer> openedBrewers;
 
-    public BrewerManager(FancyBrewer plugin) {
+    public BrewerController(FancyBrewer plugin) {
         this.brewerDataFile = plugin.getFile("brewer-data");
+        this.brewerPotionController = plugin.getBrewerPotionController();
         this.brewers = new HashMap<>();
         this.openedBrewers = new HashMap<>();
         this.loadBrewers();
@@ -36,8 +39,8 @@ public class BrewerManager {
     public Set<Material> getAvailableIngredients() {
         Set<Material> materials = new HashSet<>();
 
-        for (BrewerPotionType type : BrewerPotionType.values()) {
-            materials.addAll(type.getIngredients());
+        for (BrewerPotion potion : brewerPotionController.getPotions().values()) {
+            materials.addAll(potion.getIngredients());
         }
 
         return materials;
@@ -125,7 +128,7 @@ public class BrewerManager {
         section.getKeys(false).forEach(key -> {
             Location location = SerializeUtil.deserializeBlockLocation(key);
 
-            Brewer brewer = new Brewer(location);
+            Brewer brewer = new Brewer(brewerPotionController, location);
             brewer.setBottles(SerializeUtil.deserializeItemStackList(section.getString(key + ".bottles")));
             brewer.setIngredients(SerializeUtil.deserializeItemStackList(section.getString(key + ".ingredients")));
             brewer.getStorage().setPotions(SerializeUtil.deserializeItemStackList(section.getString(key + ".storage")));

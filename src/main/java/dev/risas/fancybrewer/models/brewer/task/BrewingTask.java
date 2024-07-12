@@ -2,8 +2,8 @@ package dev.risas.fancybrewer.models.brewer.task;
 
 import dev.risas.fancybrewer.FancyBrewerPlugin;
 import dev.risas.fancybrewer.models.brewer.Brewer;
+import dev.risas.fancybrewer.models.brewer.BrewerPotion;
 import dev.risas.fancybrewer.models.brewer.BrewerPotionStage;
-import dev.risas.fancybrewer.models.brewer.BrewerPotionType;
 import dev.risas.fancybrewer.models.brewer.BrewerState;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -39,20 +39,20 @@ public class BrewingTask extends BukkitRunnable {
                     }
                     else {
                         for (int i = 0; i < 3; i++) {
-                            brewer.getHopperInventory().addItem(brewer.getPotionType().getResult().clone());
+                            brewer.getHopperInventory().addItem(brewer.getPotion().getResult().clone());
                         }
                     }
                 }
 
                 if (!brewer.isTransfer() || !brewer.hasHopperDown()) {
                     for (int i = 0; i < 3; i++) {
-                        brewer.getStorage().addPotion(brewer.getPotionType().getResult().clone());
+                        brewer.getStorage().addPotion(brewer.getPotion().getResult().clone());
                     }
                 }
 
-                BrewerPotionType potionType = brewer.checkPotionType();
+                BrewerPotion potion = brewer.checkPotionType();
 
-                if (brewer.getBottlesAmount() < 3 || potionType == null) {
+                if (brewer.getBottlesAmount() < 3 || potion == null) {
                     brewer.resetBrewer();
                     cancel();
                     return;

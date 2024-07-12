@@ -54,12 +54,12 @@ public class BrewingDisplayButton extends Button {
             return itemBuilder.build();
         }
         else if (brewer.getCurrentStage() == BrewerPotionStage.INGREDIENT_2) {
-            return new ItemBuilder(brewer.getPotionType().getResult().clone())
+            return new ItemBuilder(brewer.getPotion().getResult().clone())
                     .setAmount(3)
                     .build();
         }
         else if (brewer.getCurrentStage() == BrewerPotionStage.INGREDIENT_3) {
-            return new ItemBuilder(brewer.getPotionType().getResult().clone())
+            return new ItemBuilder(brewer.getPotion().getResult().clone())
                     .setAmount(3)
                     .build();
         }

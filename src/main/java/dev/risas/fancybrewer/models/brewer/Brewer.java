@@ -1,6 +1,7 @@
 package dev.risas.fancybrewer.models.brewer;
 
 import dev.risas.fancybrewer.FancyBrewerPlugin;
+import dev.risas.fancybrewer.controllers.BrewerPotionController;
 import dev.risas.fancybrewer.models.brewer.menu.BrewerMenu;
 import dev.risas.fancybrewer.models.brewer.task.BrewingTask;
 import dev.risas.fancybrewer.utilities.NBTUtil;
@@ -21,17 +22,20 @@ import java.util.List;
 @Getter @Setter
 public class Brewer {
 
+    private BrewerPotionController brewerPotionController;
+
     private final Location location;
     private List<ItemStack> ingredients, bottles;
     private List<BrewerPotionStage> potionStages;
     private BrewerState state;
-    private BrewerPotionType potionType;
+    private BrewerPotion potion;
     private BrewerPotionStage currentStage;
     private BrewerStorage storage;
     private long startedTime, estimatedTime;
     private boolean transfer;
 
-    public Brewer(Location location) {
+    public Brewer(BrewerPotionController brewerPotionController, Location location) {
+        this.brewerPotionController = brewerPotionController;
         this.location = location;
         this.state = BrewerState.IDLE;
         this.ingredients = new ArrayList<>();
@@ -55,26 +59,26 @@ public class Brewer {
     }
 
     public void checkAndSetPotionType() {
-        for (BrewerPotionType type : BrewerPotionType.values()) {
-            if (type.getIngredients().equals(getIngredientsMaterial())) {
-                setPotionType(type);
-                setPotionStages(type.getStages());
+        for (BrewerPotion potion : brewerPotionController.getPotions().values()) {
+            if (potion.getIngredients().equals(getIngredientsMaterial())) {
+                setPotion(potion);
+                setPotionStages(potion.getStages());
                 break;
             }
         }
 
-        if (potionType != null && !potionType.getIngredients().equals(getIngredientsMaterial())) {
+        if (potion != null && !potion.getIngredients().equals(getIngredientsMaterial())) {
             setEstimatedTime(0);
-            setPotionType(null);
+            setPotion(null);
             setCurrentStage(null);
             resetStage();
         }
     }
 
-    public BrewerPotionType checkPotionType() {
-        for (BrewerPotionType type : BrewerPotionType.values()) {
-            if (type.getIngredients().equals(getIngredientsMaterial())) {
-                return type;
+    public BrewerPotion checkPotionType() {
+        for (BrewerPotion potion : brewerPotionController.getPotions().values()) {
+            if (potion.getIngredients().equals(getIngredientsMaterial())) {
+                return potion;
             }
         }
         return null;
@@ -168,7 +172,7 @@ public class Brewer {
     }
 
     public String getEstimatedTimeRemainingFormatted() {
-        if (potionType == null) return "N/A";
+        if (potion == null) return "N/A";
         if (estimatedTime == 0) return TimeUtil.formatMillis(getEstimatedTimeByPotionType());
         return TimeUtil.formatMillis(getEstimatedTimeRemaining());
     }
@@ -219,7 +223,7 @@ public class Brewer {
 
     public void resetBrewer() {
         this.resetStage();
-        this.setPotionType(null);
+        this.setPotion(null);
         this.setCurrentStage(null);
         this.setPotionStages(new ArrayList<>());
         this.setStartedTime(0);

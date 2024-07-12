@@ -36,19 +36,19 @@ public class BrewingStartButton extends Button {
             List<String> lore = new ArrayList<>();
 
             for (String line : itemStack.getItemMeta().getLore()) {
-                if (line.contains("<stage-potion-type-3>") && brewer.getPotionType().getStages().contains(BrewerPotionStage.INGREDIENT_2)) {
+                if (line.contains("<stage-potion-type-3>") && brewer.getPotion().getStages().contains(BrewerPotionStage.INGREDIENT_2)) {
                     lore.add(line
                             .replace("<stage-potion-type-3>", ConfigResource.BREWING_MENU_BUTTONS_START_BREWING_STAGE_POTION_TYPES.get(2)
-                                    .replace("<stage-potion-placeholder>", brewer.getPotionType().getPlaceholder(2))
-                                    .replace("<stage-potion-type>", brewer.getPotionType().getName())
+                                    .replace("<stage-potion-placeholder>", brewer.getPotion().getPlaceholder(2))
+                                    .replace("<stage-potion-type>", brewer.getPotion().getName())
                                     .replace("<stage-color>", stage.getColorStage(BrewerPotionStage.INGREDIENT_2))));
                     continue;
                 }
-                if (line.contains("<stage-potion-type-4>") && brewer.getPotionType().getStages().contains(BrewerPotionStage.INGREDIENT_3)) {
+                if (line.contains("<stage-potion-type-4>") && brewer.getPotion().getStages().contains(BrewerPotionStage.INGREDIENT_3)) {
                     lore.add(line
                             .replace("<stage-potion-type-4>", ConfigResource.BREWING_MENU_BUTTONS_START_BREWING_STAGE_POTION_TYPES.get(3)
-                                    .replace("<stage-potion-placeholder>", brewer.getPotionType().getPlaceholder(3))
-                                    .replace("<stage-potion-type>", brewer.getPotionType().getName())
+                                    .replace("<stage-potion-placeholder>", brewer.getPotion().getPlaceholder(3))
+                                    .replace("<stage-potion-type>", brewer.getPotion().getName())
                                     .replace("<stage-color>", stage.getColorStage(BrewerPotionStage.INGREDIENT_3))));
                     continue;
                 }
@@ -58,14 +58,14 @@ public class BrewingStartButton extends Button {
                                 .replace("<stage-color>", stage.getColorStage(BrewerPotionStage.AWKWARD)))
                         .replace("<stage-potion-type-2>", ConfigResource.BREWING_MENU_BUTTONS_START_BREWING_STAGE_POTION_TYPES.get(1)
                                 .replace("<stage-color>", stage.getColorStage(BrewerPotionStage.INGREDIENT_1)))
-                        .replace("<stage-potion-type>", brewer.getPotionType().getName())
+                        .replace("<stage-potion-type>", brewer.getPotion().getName())
                         .replace("<stage-phase>", String.valueOf(brewer.getCurrentStage().getIndex() + 1))
                         .replace("<stage-phase-time>", brewer.getCurrentStage().getStageCooldownFormatted())
                         .replace("<time>", brewer.getEstimatedTimeRemainingFormatted()));
             }
 
-            lore.removeIf(line -> line.contains("<stage-potion-type-3>") && !brewer.getPotionType().getStages().contains(BrewerPotionStage.INGREDIENT_2));
-            lore.removeIf(line -> line.contains("<stage-potion-type-4>") && !brewer.getPotionType().getStages().contains(BrewerPotionStage.INGREDIENT_3));
+            lore.removeIf(line -> line.contains("<stage-potion-type-3>") && !brewer.getPotion().getStages().contains(BrewerPotionStage.INGREDIENT_2));
+            lore.removeIf(line -> line.contains("<stage-potion-type-4>") && !brewer.getPotion().getStages().contains(BrewerPotionStage.INGREDIENT_3));
 
             return new ItemBuilder(itemStack)
                     .setLore(lore)
@@ -97,7 +97,7 @@ public class BrewingStartButton extends Button {
                     return;
                 }
 
-                if (brewer.getPotionType() == null) {
+                if (brewer.getPotion() == null) {
                     playFail(player);
                     ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_NEED_INGREDIENTS);
                     return;
