@@ -39,7 +39,7 @@ public class BrewerListener implements Listener {
         this.brewerManager = plugin.getInstance().getBrewerManager();
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled = true)
     private void onBrewerPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         if (!brewerManager.isBrewer(player.getItemInHand())) return;
@@ -48,7 +48,7 @@ public class BrewerListener implements Listener {
         ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_PLACED);
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled = true)
     private void onBrewerBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
         Location location = block.getLocation();
