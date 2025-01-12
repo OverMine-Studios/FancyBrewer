@@ -30,7 +30,7 @@ public class ConfigResource extends Resource {
         BREWING_ITEM = new ItemBuilder(XMaterial.BREWING_STAND.parseMaterial())
                 .setName(configFile.getString("brewer-item.name"))
                 .setLore(configFile.getStringList("brewer-item.description"))
-                .setEnchanted(true)
+                .setEnchanted(configFile.getBoolean("brewer-item.enchanted"))
                 .build();
         BREWING_MENU_TITLE = configFile.getString("brewer-menu.title");
         BREWING_MENU_ROWS = configFile.getInt("brewer-menu.rows");
