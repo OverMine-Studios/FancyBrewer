@@ -42,7 +42,7 @@ public class BrewerListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     private void onBrewerPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if (!brewerManager.isBrewer(player.getItemInHand())) return;
+        if (!brewerManager.isBrewerItem(player.getItemInHand())) return;
 
         brewerManager.addBrewer(new Brewer(brewerPotionController, event.getBlock().getLocation()));
         ChatUtil.sendMessage(player, LanguageResource.BREWER_MESSAGES_PLACED);
@@ -52,7 +52,7 @@ public class BrewerListener implements Listener {
     private void onBrewerBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
         Location location = block.getLocation();
-        if (!brewerManager.existBrewer(location)) return;
+        if (!brewerManager.isBrewerLocation(location)) return;
 
         Player player = event.getPlayer();
 
@@ -83,7 +83,7 @@ public class BrewerListener implements Listener {
             Player player = event.getPlayer();
             Location location = block.getLocation();
 
-            if (brewerManager.existBrewer(location)) {
+            if (brewerManager.isBrewerLocation(location)) {
                 event.setCancelled(true);
 
                 Brewer brewer = brewerManager.getBrewer(location);

@@ -92,11 +92,11 @@ public class BrewerController {
         openedBrewers.remove(player.getUniqueId());
     }
 
-    public boolean existBrewer(Location location) {
+    public boolean isBrewerLocation(Location location) {
         return brewers.containsKey(location);
     }
 
-    public boolean isBrewer(ItemStack itemStack) {
+    public boolean isBrewerItem(ItemStack itemStack) {
         return itemStack.isSimilar(ConfigResource.BREWING_ITEM);
     }
 
