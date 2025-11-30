@@ -6,14 +6,6 @@ import org.bukkit.Bukkit;
 @UtilityClass
 public class BukkitUtil {
 
-    public String SERVER_VERSION =
-            Bukkit.getServer()
-                    .getClass().getPackage()
-                    .getName().split("\\.")[3]
-                    .substring(1);
-
-    public int SERVER_VERSION_INT = Integer.parseInt(
-            SERVER_VERSION
-                    .replace("1_", "")
-                    .replaceAll("_R\\d", ""));
+    public int SERVER_VERSION_INT = Integer.parseInt(Bukkit.getBukkitVersion().split("\\.")[1]
+            .split("-")[0]);
 }
