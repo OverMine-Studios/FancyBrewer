@@ -1,5 +1,6 @@
 package dev.risas.fancybrewer.models.plugin;
 
+import de.tr7zw.changeme.nbtapi.NBT;
 import dev.risas.fancybrewer.FancyBrewerPlugin;
 import dev.risas.fancybrewer.commands.BrewerCommand;
 import dev.risas.fancybrewer.commands.subcommands.BrewerGiveCommand;
